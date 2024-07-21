@@ -2,11 +2,17 @@ import { useContext } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 import { UserContext } from "../../contexts/user.context";
+import { signOutUSer } from "../../utils/firebase/firebase.utils";
 import userDp from "../../assets/userdp.png";
 
 const Navigation = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const signOut = () => {
+    signOutUSer();
+    setCurrentUser(null);
+  };
 
   return (
     <>
@@ -25,7 +31,10 @@ const Navigation = () => {
             />
           </div>
           {currentUser ? (
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={signOut}
+            >
               <img
                 src={userDp}
                 alt="display-picture"

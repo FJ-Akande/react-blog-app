@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -55,9 +56,11 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
     } catch (error) {
-      console.erro("error creating the user", error.message);
+      console.error("error creating the user", error.message);
     }
   }
 
   return userDocRef;
 };
+
+export const signOutUSer = async () => await signOut(auth);
