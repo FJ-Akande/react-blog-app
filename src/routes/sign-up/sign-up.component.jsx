@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { Link } from "react-router-dom";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from "../../utils/firebase/firebase.utils";
 import { errorToast } from "../../utils/toast/toast.utils";
-import { ClipLoader } from "react-spinners";
 import Input from "../../components/input/input.component";
+import { ClipLoader } from "react-spinners";
 
-const SignIn = () => {
-  const navigate = useNavigate();
-
+const SignUp = () => {
   const defaultFormFields = {
+    displayName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   };
 
   const [formFields, setFormFields] = useState(defaultFormFields);
@@ -18,28 +21,44 @@ const SignIn = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setFormFields({
       ...formFields,
       [name]: value,
     });
   };
 
-  const resetForm = () => setFormFields(defaultFormFields);
+  const resetFormFields = () => setFormFields(defaultFormFields);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const { email, password } = formFields;
+    const { displayName, email, password, confirmPassword } = formFields;
+
+    if (password !== confirmPassword) {
+      errorToast("passwords do not match");
+      setLoading(false);
+      return;
+    }
 
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
+      const { user } = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      await createUserDocumentFromAuth(user, { displayName });
       setLoading(false);
-      resetForm();
-      navigate("/");
+      resetFormFields();
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":
-          errorToast("Cannot login user, email already in use");
+          errorToast("Cannot create user, email already in use");
+          break;
+        case "auth/weak-password":
+          errorToast("Password should be at least 6 characters");
+          break;
+        case "auth/invalid-email":
+          errorToast("Invalid email address");
           break;
         default:
           errorToast(error.message.replace("Firebase: ", ""));
@@ -50,11 +69,20 @@ const SignIn = () => {
 
   return (
     <div className="bg-secondary min-h-screen flex justify-center items-center">
-      <div className="w-full max-w-sm p-4 border border-gray-700 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full max-w-md p-4 border border-gray-700 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <h5 className="text-xl font-medium text-white dark:text-white">
-            Sign in to our platform
+            Create account
           </h5>
+          <Input
+            label="Display Name"
+            type="text"
+            placeholder="John Doe"
+            name="displayName"
+            id="displayName"
+            value={formFields.displayName}
+            onChange={handleChange}
+          />
           <Input
             label="Email"
             type="email"
@@ -73,15 +101,15 @@ const SignIn = () => {
             value={formFields.password}
             onChange={handleChange}
           />
-          <div className="flex items-start">
-            <Input type={"checkbox"} />
-            <Link
-              to="/"
-              className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500"
-            >
-              Forgot Password?
-            </Link>
-          </div>
+          <Input
+            label="Confirm Password"
+            type="password"
+            placeholder="••••••••"
+            name="confirmPassword"
+            id="confirmPassword"
+            value={formFields.confirmPassword}
+            onChange={handleChange}
+          />
           <button
             type="submit"
             className="w-full text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -92,16 +120,16 @@ const SignIn = () => {
                 <ClipLoader size={20} color={"#fff"} />
               </span>
             ) : (
-              "Login to your account"
+              "Create account"
             )}
           </button>
           <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-            Not registered?{" "}
+            Already a user?{" "}
             <Link
-              to="/create-account"
+              to="/sign-in"
               className="text-blue-700 hover:underline dark:text-blue-500"
             >
-              Create account
+              Login
             </Link>
           </div>
         </form>
@@ -110,4 +138,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
