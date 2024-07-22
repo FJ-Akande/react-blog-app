@@ -1,18 +1,35 @@
 import { useContext } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
 import { UserContext } from "../../contexts/user.context";
-import { signOutUSer } from "../../utils/firebase/firebase.utils";
+import { signOutUser } from "../../utils/firebase/firebase.utils";
+import { IoIosArrowDown } from "react-icons/io";
+import { HiMiniSquares2X2 } from "react-icons/hi2";
 import userDp from "../../assets/userdp.png";
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const signOut = () => {
-    signOutUSer();
-    setCurrentUser(null);
-  };
+  const navLinks = [
+    {
+      id: 1,
+      name: "Projects",
+      link: "/",
+      icon: <HiMiniSquares2X2 />,
+    },
+    {
+      id: 2,
+      name: "News",
+      link: "/abc",
+      icon: <HiMiniSquares2X2 />,
+    },
+    {
+      id: 3,
+      name: "How It Works",
+      link: "/abc",
+      icon: <HiMiniSquares2X2 />,
+    },
+  ];
 
   return (
     <>
@@ -21,19 +38,24 @@ const Navigation = () => {
           <NavLink to="/">
             <h1 className="font-bold">Cannabud.</h1>
           </NavLink>
-          <div className="w-2/5">
-            <input
-              type="search"
-              name="search"
-              id="search"
-              placeholder="search blogs..."
-              className="w-full border border-gray-700 rounded-3xl bg-transparent outline-none py-2 px-4"
-            />
-          </div>
+          <ul className="flex gap-10 text-gray-500">
+            {navLinks.map(({ id, name, link, icon }) => (
+              <NavLink
+                to={link}
+                key={id}
+                className={({ isActive }) => `${isActive ? "text-white" : ""}`}
+              >
+                <li className="flex items-center gap-2 font-medium">
+                  {icon}
+                  {name}
+                </li>
+              </NavLink>
+            ))}
+          </ul>
           {currentUser ? (
             <div
               className="flex items-center gap-2 cursor-pointer"
-              onClick={signOut}
+              onClick={signOutUser}
             >
               <img
                 src={userDp}

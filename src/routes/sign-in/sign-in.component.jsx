@@ -1,14 +1,12 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import { errorToast } from "../../utils/toast/toast.utils";
-import { UserContext } from "../../contexts/user.context";
 import { ClipLoader } from "react-spinners";
 import Input from "../../components/input/input.component";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { setCurrentUser } = useContext(UserContext);
 
   const defaultFormFields = {
     email: "",
@@ -34,11 +32,7 @@ const SignIn = () => {
     const { email, password } = formFields;
 
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      setCurrentUser(user);
+      await signInAuthUserWithEmailAndPassword(email, password);
       setLoading(false);
       resetForm();
       navigate("/");

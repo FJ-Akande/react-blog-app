@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -9,6 +9,8 @@ import Input from "../../components/input/input.component";
 import { ClipLoader } from "react-spinners";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const defaultFormFields = {
     displayName: "",
     email: "",
@@ -49,6 +51,7 @@ const SignUp = () => {
       await createUserDocumentFromAuth(user, { displayName });
       setLoading(false);
       resetFormFields();
+      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":
