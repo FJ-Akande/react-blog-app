@@ -1,7 +1,7 @@
 import { toast, Bounce } from "react-toastify";
 
-export const successToast = (errorMessage) => {
-  toast.error(errorMessage, {
+export const successToast = (successMessage) => {
+  toast.success(successMessage, {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
