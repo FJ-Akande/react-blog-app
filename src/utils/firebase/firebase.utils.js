@@ -10,12 +10,12 @@ import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyANV_mFjTw9CdrlSqGUoG7ATqntrSqZd-Q",
-  authDomain: "nyblogs-gt.firebaseapp.com",
-  projectId: "nyblogs-gt",
-  storageBucket: "nyblogs-gt.appspot.com",
-  messagingSenderId: "291492043762",
-  appId: "1:291492043762:web:7d6c23b3347a50a2e3a96b",
+  apiKey: "AIzaSyCy76C_goWgKIv5jzZHSscxe_6WECIjexs",
+  authDomain: "cannabud-ny.firebaseapp.com",
+  projectId: "cannabud-ny",
+  storageBucket: "cannabud-ny.appspot.com",
+  messagingSenderId: "436953763210",
+  appId: "1:436953763210:web:934e5c4161d6889f9b8c73",
 };
 
 const app = initializeApp(firebaseConfig);

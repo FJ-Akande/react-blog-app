@@ -6,6 +6,7 @@ export default {
       colors: {
         primary: "rgb(31, 41, 55)",
         secondary: "rgb(17, 24, 39)",
+        text: "rgb(107, 114, 128)",
       },
     },
   },

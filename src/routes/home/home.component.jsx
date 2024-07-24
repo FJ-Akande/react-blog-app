@@ -1,18 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import Card from "../../components/card/card.component";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="bg-secondary min-h-screen text-white pt-24">
-      {/* <div className="max-w-lg mx-auto">
-        <input
-          type="search"
-          name="search"
-          id="search"
-          placeholder="search blogs..."
-          className="w-full border border-gray-700 rounded-3xl bg-transparent outline-none py-2 px-4"
-        />
-      </div> */}
+      {/* Filter based on Topic */}
       <div className="max-w-3xl mx-auto my-10">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Projects</h1>
@@ -24,7 +19,7 @@ const Home = () => {
           </button>
         </div>
         <div className="my-10">
-          <Card />
+          <Card onClick={() => navigate("/details/1")} />
         </div>
         <button
           type="button"

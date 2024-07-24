@@ -4,6 +4,8 @@ import { UserContext } from "../../contexts/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
+import { BsGlobeEuropeAfrica } from "react-icons/bs";
+import { FaCircleQuestion } from "react-icons/fa6";
 import userDp from "../../assets/userdp.png";
 
 const Navigation = () => {
@@ -21,13 +23,13 @@ const Navigation = () => {
       id: 2,
       name: "News",
       link: "/abc",
-      icon: <HiMiniSquares2X2 />,
+      icon: <BsGlobeEuropeAfrica />,
     },
     {
       id: 3,
       name: "How It Works",
-      link: "/abc",
-      icon: <HiMiniSquares2X2 />,
+      link: "/cde",
+      icon: <FaCircleQuestion />,
     },
   ];
 
