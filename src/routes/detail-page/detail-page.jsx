@@ -7,8 +7,8 @@ const DetailPage = () => {
   const { id } = useParams();
 
   return (
-    <div className="bg-secondary text-white min-h-screen p-24">
-      <div className="max-w-[92%] mx-auto">
+    <div className="bg-secondary text-white min-h-screen py-24">
+      <div className="max-w-[80%] mx-auto">
         <h1 className="font-semibold text-2xl">Project Details</h1>
         <div className="bg-primary max-w-[960px] mx-auto my-12 rounded-xl flex overflow-hidden">
           <div className="w-[70%] p-8 flex flex-col justify-between">
@@ -21,9 +21,9 @@ const DetailPage = () => {
                 commodi a cupiditate molestias ipsum quos eos hic.
               </p>
               <div className="flex items-center gap-2">
-                <ColorFulDiv>Frontend</ColorFulDiv>
-                <ColorFulDiv>Backend</ColorFulDiv>
-                <ColorFulDiv>Fullstack</ColorFulDiv>
+                <ColorFulDiv instance="1">Frontend</ColorFulDiv>
+                <ColorFulDiv instance="2">Backend</ColorFulDiv>
+                <ColorFulDiv instance="3">Fullstack</ColorFulDiv>
               </div>
               <h3 className="text-lg font-medium mt-8">Skills and Expertise</h3>
               <p className="text-sm text-text">

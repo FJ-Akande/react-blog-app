@@ -18,9 +18,9 @@ const Card = ({ ...props }) => {
       </div>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <ColorFulDiv>Frontend</ColorFulDiv>
-          <ColorFulDiv>Backend</ColorFulDiv>
-          <ColorFulDiv>Fullstack</ColorFulDiv>
+          <ColorFulDiv instance="1">Frontend</ColorFulDiv>
+          <ColorFulDiv instance="2">Backend</ColorFulDiv>
+          <ColorFulDiv instance="3">Fullstack</ColorFulDiv>
         </div>
         <p className="text-sm text-gray-400">May 1, 2024</p>
       </div>

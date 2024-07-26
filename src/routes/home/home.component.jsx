@@ -11,7 +11,10 @@ const Home = () => {
       <div className="max-w-3xl mx-auto my-10">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Projects</h1>
-          <button className="bg-primary p-3 rounded-lg flex items-center gap-2 font-medium">
+          <button
+            className="bg-primary p-3 rounded-lg flex items-center gap-2 font-medium"
+            onClick={() => navigate("create-blog")}
+          >
             <span>
               <IoMdAdd className="text-2xl" />
             </span>
