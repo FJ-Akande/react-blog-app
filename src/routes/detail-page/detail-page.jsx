@@ -10,7 +10,7 @@ const DetailPage = () => {
     <div className="bg-secondary text-white min-h-screen py-24">
       <div className="max-w-[80%] mx-auto">
         <h1 className="font-semibold text-2xl">Project Details</h1>
-        <div className="bg-primary max-w-[960px] mx-auto my-12 rounded-xl flex overflow-hidden">
+        <div className="bg-primary max-w-[960px] mx-auto my-8 rounded-xl flex overflow-hidden">
           <div className="w-[70%] p-8 flex flex-col justify-between">
             <div>
               <h2 className="text-2xl font-medium">Dean DeaconCo</h2>

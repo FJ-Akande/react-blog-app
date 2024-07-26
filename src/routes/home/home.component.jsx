@@ -6,7 +6,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-secondary min-h-screen text-white pt-24">
+    <div className="min-h-screen text-white py-24">
       {/* Filter based on Topic */}
       <div className="max-w-3xl mx-auto my-10">
         <div className="flex justify-between items-center">

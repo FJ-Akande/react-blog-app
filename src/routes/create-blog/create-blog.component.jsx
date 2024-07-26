@@ -69,7 +69,7 @@ const levelOptions = [
 
 const CreateBlog = () => {
   return (
-    <div className="min-h-screen bg-secondary py-24 text-text">
+    <div className="min-h-screen bg-secondary text-text py-24">
       <div className="max-w-[80%] mx-auto">
         <h1 className="font-semibold text-2xl text-white">Create blog</h1>
         <form className="my-10 space-y-10">
@@ -96,10 +96,10 @@ const CreateBlog = () => {
             </div>
           </div>
           <button
-            className="bg-transparent rounded-lg border border-text text-white p-3 font-medium"
+            className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium"
             type="submit"
           >
-            Create Blog
+            Create blog
           </button>
         </form>
       </div>

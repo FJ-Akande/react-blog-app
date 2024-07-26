@@ -6,6 +6,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
 import { FaCircleQuestion } from "react-icons/fa6";
+import Footer from "../../components/footer/footer.component";
 import userDp from "../../assets/userdp.png";
 
 const Navigation = () => {
@@ -34,7 +35,7 @@ const Navigation = () => {
   ];
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <div className="fixed w-full top-0 bg-primary border-b border-gray-700 text-white">
         <div className="flex items-center justify-between max-w-[80%] mx-auto py-3">
           <NavLink to="/">
@@ -77,8 +78,11 @@ const Navigation = () => {
           )}
         </div>
       </div>
-      <Outlet />
-    </>
+      <main className="bg-secondary flex-grow">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 };
 
