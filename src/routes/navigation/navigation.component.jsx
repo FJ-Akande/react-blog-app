@@ -1,17 +1,34 @@
-import { useContext } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { UserContext } from "../../contexts/user.context";
-import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
 import { FaCircleQuestion } from "react-icons/fa6";
 import Footer from "../../components/footer/footer.component";
+import ProfileDropdown from "../../components/profile-dropdown/profile-dropdown.component";
 import userDp from "../../assets/userdp.png";
+import { UserContext } from "../../contexts/user.context";
 
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const navLinks = [
     {
@@ -23,13 +40,13 @@ const Navigation = () => {
     {
       id: 2,
       name: "News",
-      link: "/abc",
+      link: "/news",
       icon: <BsGlobeEuropeAfrica />,
     },
     {
       id: 3,
       name: "How It Works",
-      link: "/cde",
+      link: "/how-it-works",
       icon: <FaCircleQuestion />,
     },
   ];
@@ -56,16 +73,22 @@ const Navigation = () => {
             ))}
           </ul>
           {currentUser ? (
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={signOutUser}
-            >
-              <img
-                src={userDp}
-                alt="display-picture"
-                className="h-10 w-10 bg-black rounded-full"
-              />
-              <IoIosArrowDown className="text-xl text-gray-500" />
+            <div className="relative">
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleDropdown();
+                }}
+              >
+                <img
+                  src={userDp}
+                  alt="display-picture"
+                  className="h-10 w-10 bg-black rounded-full"
+                />
+                <IoIosArrowDown className="text-xl text-gray-500" />
+              </div>
+              <ProfileDropdown ref={dropdownRef} isVisible={dropdownVisible} />
             </div>
           ) : (
             <button
