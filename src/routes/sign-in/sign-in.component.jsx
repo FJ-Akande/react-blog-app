@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import { errorToast } from "../../utils/toast/toast.utils";
 import { ClipLoader } from "react-spinners";
@@ -7,6 +7,7 @@ import Input from "../../components/input/input.component";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const defaultFormFields = {
     email: "",
@@ -35,7 +36,11 @@ const SignIn = () => {
       await signInAuthUserWithEmailAndPassword(email, password);
       setLoading(false);
       resetForm();
-      navigate("/");
+      if (location.state?.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":

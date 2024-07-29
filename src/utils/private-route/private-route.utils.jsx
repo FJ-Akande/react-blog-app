@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { UserContext } from "../../contexts/user.context";
 
 const PrivateRoute = ({ children }) => {
   const { currentUser, loading } = useContext(UserContext);
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -13,7 +14,11 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  return currentUser ? children : <Navigate to="/sign-in" replace />;
+  return currentUser ? (
+    children
+  ) : (
+    <Navigate to="/sign-in" replace state={{ from: location }} />
+  );
 };
 
 export default PrivateRoute;
