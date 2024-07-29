@@ -76,10 +76,7 @@ const Navigation = () => {
             <div className="relative">
               <div
                 className="flex items-center gap-2 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleDropdown();
-                }}
+                onClick={toggleDropdown}
               >
                 <img
                   src={userDp}
@@ -88,7 +85,11 @@ const Navigation = () => {
                 />
                 <IoIosArrowDown className="text-xl text-gray-500" />
               </div>
-              <ProfileDropdown ref={dropdownRef} isVisible={dropdownVisible} />
+              <ProfileDropdown
+                ref={dropdownRef}
+                isVisible={dropdownVisible}
+                toggleDropdown={toggleDropdown}
+              />
             </div>
           ) : (
             <button

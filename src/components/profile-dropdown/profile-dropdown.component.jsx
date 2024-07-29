@@ -5,7 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { FaFile } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 
-const ProfileDropdown = forwardRef(({ isVisible }, ref) => {
+const ProfileDropdown = forwardRef(({ isVisible, toggleDropdown }, ref) => {
   return (
     <div
       ref={ref}
@@ -16,6 +16,7 @@ const ProfileDropdown = forwardRef(({ isVisible }, ref) => {
       <Link
         to="/profile"
         className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-secondary"
+        onClick={toggleDropdown}
       >
         <FaUser className="text-xl" />
         Profile
@@ -24,12 +25,16 @@ const ProfileDropdown = forwardRef(({ isVisible }, ref) => {
         text-sm
         to="/my-posts"
         className="flex items-center gap-3 px-4 py-3 border-t border-b border-gray-700 text-sm hover:bg-secondary"
+        onClick={toggleDropdown}
       >
         <FaFile className="text-xl" />
         My Posts
       </Link>
       <button
-        onClick={signOutUser}
+        onClick={() => {
+          signOutUser();
+          toggleDropdown();
+        }}
         className="flex items-center gap-3 w-full text-left px-4 py-3 text-red-400 text-sm hover:bg-secondary"
       >
         <MdLogout className="text-xl" />
