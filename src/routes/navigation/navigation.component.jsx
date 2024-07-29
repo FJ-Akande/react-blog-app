@@ -51,12 +51,14 @@ const Navigation = () => {
     },
   ];
 
+  //QuickQuestion
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed w-full top-0 bg-primary border-b border-gray-700 text-white">
         <div className="flex items-center justify-between max-w-[80%] mx-auto py-3">
           <NavLink to="/">
-            <h1 className="font-bold text-lg">Cannabud.</h1>
+            <h1 className="font-bold text-lg">QuickQuestion</h1>
           </NavLink>
           <ul className="flex gap-10 text-gray-500">
             {navLinks.map(({ id, name, link, icon }) => (

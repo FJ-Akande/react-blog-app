@@ -7,7 +7,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen text-white py-24">
-      {/* Filter based on Topic */}
       <div className="max-w-3xl mx-auto my-10">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Projects</h1>
