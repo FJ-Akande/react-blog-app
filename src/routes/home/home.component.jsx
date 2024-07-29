@@ -13,7 +13,7 @@ const Home = () => {
           <h1 className="text-xl font-semibold">Projects</h1>
           <button
             className="bg-primary p-3 rounded-lg flex items-center gap-2 font-medium"
-            onClick={() => navigate("create-blog")}
+            onClick={() => navigate("/create-blog")}
           >
             <span>
               <IoMdAdd className="text-2xl" />
