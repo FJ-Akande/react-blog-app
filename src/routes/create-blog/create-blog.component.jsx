@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../../components/input/input.component";
 import SkillCard from "../../components/skill-card/skill-card.component";
-import { successToast } from "../../utils/toast/toast.utils";
+import { errorToast, successToast } from "../../utils/toast/toast.utils";
 
 const initialOptions = [
   {
@@ -83,7 +83,7 @@ const defaultFormFields = {
   title: "",
   description: "",
   skills: [],
-  levelRequired: "",
+  levelRequired: "Beginner",
 };
 
 const CreateBlog = () => {
@@ -117,15 +117,15 @@ const CreateBlog = () => {
   const handleLevelClick = (id) => {
     const updatedOptions = levelOptions.map((option) =>
       option.id === id
-        ? { ...option, isSelected: !option.isSelected }
+        ? { ...option, isSelected: true }
         : { ...option, isSelected: false }
     );
     setLevelOptions(updatedOptions);
 
-    const selectedOption = updatedOptions.find((option) => option.id === id);
+    const selectedOption = updatedOptions.find((option) => option.isSelected);
     setFormFields({
       ...formFields,
-      levelRequired: selectedOption.value,
+      levelRequired: selectedOption ? selectedOption.value : "",
     });
   };
 
@@ -140,6 +140,11 @@ const CreateBlog = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    if (!formFields.skills.length && formFields.levelRequired !== "") {
+      errorToast("Fill empty inputs");
+      return;
+    }
     successToast("Post published!");
     resetForm();
   };
@@ -177,6 +182,16 @@ const CreateBlog = () => {
                   value={formFields.skills}
                 />
               ))}
+              <div
+                className="bg-gray-800 rounded-xl text-text font-medium text-center text-sm flex flex-col items-center justify-center cursor-pointer"
+                onClick={() =>
+                  (window.location.href =
+                    "mailto:fortunatusakande@gmail.com?subject=Hello&body=I would like to contact you regarding...")
+                }
+              >
+                <p>Recommend a new one?</p>
+                <p>Contact support</p>
+              </div>
             </div>
           </div>
           <div>

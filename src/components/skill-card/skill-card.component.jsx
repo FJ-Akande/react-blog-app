@@ -2,7 +2,7 @@ const SkillCard = ({ option, ...otherProps }) => {
   const { name, label, icon, isSelected, value } = option;
   return (
     <div
-      className="p-3 bg-gray-800 rounded-xl flex items-center"
+      className="p-3 bg-gray-800 rounded-xl flex items-center cursor-pointer"
       {...otherProps}
     >
       <img className="w-10 h-10 mr-3" src={icon} />
