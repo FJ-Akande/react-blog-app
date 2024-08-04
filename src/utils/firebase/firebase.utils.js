@@ -6,7 +6,14 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -47,7 +54,7 @@ export const createUserDocumentFromAuth = async (
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
-    const createdAt = new Date();
+    const createdAt = serverTimestamp();
 
     try {
       await setDoc(userDocRef, {
@@ -62,6 +69,44 @@ export const createUserDocumentFromAuth = async (
   }
 
   return userDocRef;
+};
+
+export const updateUserProfile = async (userId, profileData) => {
+  if (!userId) return;
+
+  const userDocRef = doc(db, "users", userId);
+  const userSnapshot = await getDoc(userDocRef);
+  const lastUpdated = userSnapshot.data().lastUpdated;
+
+  //Function to check if an hour has passed since the last update
+  const now = new Date();
+  if (lastUpdated && now - lastUpdated.toDate() < 3600000) {
+    throw new Error("You can only update your profile once every hour.");
+  }
+
+  try {
+    await updateDoc(userDocRef, {
+      ...profileData,
+      lastUpdated: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error("Error updating user profile", error.message);
+    throw error;
+  }
+};
+
+export const getUserProfile = async (userId) => {
+  if (!userId) return null;
+
+  const userDocRef = doc(db, "users", userId);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    return userSnapshot.data();
+  } else {
+    console.error("User does not exist");
+    return null;
+  }
 };
 
 export const signOutUser = async () => await signOut(auth);

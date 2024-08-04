@@ -1,16 +1,100 @@
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../contexts/user.context";
+import {
+  updateUserProfile,
+  getUserProfile,
+} from "../../utils/firebase/firebase.utils";
 import Input from "../../components/input/input.component";
+import { errorToast, successToast } from "../../utils/toast/toast.utils";
+import { BeatLoader } from "react-spinners";
+
+const defaultFormFields = {
+  displayName: "",
+  bio: "",
+  techStacks: "",
+  discord: "",
+  twitter: "",
+};
 
 const Profile = () => {
+  const { currentUser } = useContext(UserContext);
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (currentUser) {
+        const userProfile = await getUserProfile(currentUser.uid);
+        if (userProfile) {
+          setFormFields({
+            displayName: userProfile.displayName || "",
+            bio: userProfile.bio || "",
+            techStacks: userProfile.techStacks || "",
+            discord: userProfile.discord || "",
+            twitter: userProfile.twitter || "",
+          });
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [currentUser]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormFields({
+      ...formFields,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      await updateUserProfile(currentUser.uid, formFields);
+      const updatedProfile = await getUserProfile(currentUser.uid);
+      setFormFields(updatedProfile);
+      setLoading(false);
+      successToast("Profile updated");
+    } catch (error) {
+      console.error("Error updating profile: ", error);
+      const updatedProfile = await getUserProfile(currentUser.uid);
+      setFormFields(updatedProfile);
+      setLoading(false);
+      errorToast(error.message);
+    }
+  };
+
   return (
     <div className="max-w-[80%] mx-auto py-24 text-white">
       <h2 className="text-2xl font-semibold">Profile</h2>
-      <form className="my-10 space-y-6">
-        <Input label="Name" type="text" placeholder="Dean Deanco" />
-        <Input label="Bio" type="textarea" placeholder="Frontend Dev." />
+      <form className="my-10 space-y-6" onSubmit={handleFormSubmit}>
+        <Input
+          label="Name"
+          type="text"
+          placeholder="Dean DeaconCo"
+          name="displayName"
+          value={formFields.displayName}
+          onChange={handleChange}
+        />
+        <Input
+          label="Bio"
+          type="textarea"
+          placeholder="Frontend Dev."
+          name="bio"
+          value={formFields.bio}
+          onChange={handleChange}
+        />
         <Input
           label="Tech Stacks"
           type="text"
           placeholder="Typescript, ReactJS, Tailwindcss, Bootstrap, CSS, HTML"
+          name="techStacks"
+          value={formFields.techStacks}
+          onChange={handleChange}
         />
         <div className="grid grid-cols-20 md:grid-cols-12 sm:gap-24 md:gap-12 mb-2">
           <div className="col-span-5">
@@ -22,16 +106,20 @@ const Profile = () => {
                 "https://www.porfolio.co/_next/image?url=%2Fimages%2Ficon-discord-framed.png&w=32&q=75"
               }
               label="Discord"
-              name="discordUsername"
+              name="discord"
               placeholder="Discord Username"
+              value={formFields.discord}
+              onChange={handleChange}
             />
             <SocialInput
               imgSrc={
                 "https://www.porfolio.co/_next/image?url=%2Fimages%2Ficon-twitter-framed.png&w=32&q=75"
               }
               label="Twitter"
-              name="twitterUsername"
+              name="twitter"
               placeholder="Twitter Username"
+              value={formFields.twitter}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -39,7 +127,13 @@ const Profile = () => {
           className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium"
           type="submit"
         >
-          Save Changes
+          {loading ? (
+            <span className="flex items-center justify-center w-full">
+              <BeatLoader size={10} margin={2} color={"#fff"} />
+            </span>
+          ) : (
+            "Save Changes"
+          )}
         </button>
       </form>
     </div>
