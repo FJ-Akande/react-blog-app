@@ -17,28 +17,21 @@ const defaultFormFields = {
 };
 
 const Profile = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, currentUserProfile } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (currentUser) {
-        const userProfile = await getUserProfile(currentUser.uid);
-        if (userProfile) {
-          setFormFields({
-            displayName: userProfile.displayName || "",
-            bio: userProfile.bio || "",
-            techStacks: userProfile.techStacks || "",
-            discord: userProfile.discord || "",
-            twitter: userProfile.twitter || "",
-          });
-        }
-      }
-    };
-
-    fetchUserProfile();
-  }, [currentUser]);
+    if (currentUserProfile) {
+      setFormFields({
+        displayName: currentUserProfile.displayName || "",
+        bio: currentUserProfile.bio || "",
+        techStacks: currentUserProfile.techStacks || "",
+        discord: currentUserProfile.discord || "",
+        twitter: currentUserProfile.twitter || "",
+      });
+    }
+  }, [currentUserProfile]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -53,10 +46,21 @@ const Profile = () => {
     event.preventDefault();
     setLoading(true);
 
+    if (
+      formFields.displayName === currentUserProfile.displayName &&
+      formFields.bio === currentUserProfile.bio &&
+      formFields.techStacks === currentUserProfile.techStacks &&
+      formFields.discord === currentUserProfile.discord &&
+      formFields.twitter === currentUserProfile.twitter
+    ) {
+      errorToast("No changes made");
+      setLoading(false);
+      return;
+    }
+
     try {
       await updateUserProfile(currentUser.uid, formFields);
-      const updatedProfile = await getUserProfile(currentUser.uid);
-      setFormFields(updatedProfile);
+      window.location.reload();
       setLoading(false);
       successToast("Profile updated");
     } catch (error) {
