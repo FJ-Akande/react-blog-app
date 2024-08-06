@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoMdAdd } from "react-icons/io";
 import Card from "../../components/card/card.component";
+import { IoMdAdd } from "react-icons/io";
+import { BeatLoader } from "react-spinners";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="min-h-screen text-white py-24">
@@ -25,9 +29,16 @@ const Home = () => {
         </div>
         <button
           type="button"
-          className="bg-primary my-4 py-2 text-center w-full rounded-lg font-medium"
+          className="bg-primary my-4 py-2 text-center w-full rounded-lg font-medium h-10"
+          onClick={() => setLoading(!loading)}
         >
-          Load More
+          {loading ? (
+            <span className="flex items-center justify-center w-full h-full">
+              <BeatLoader size={10} margin={2} color={"#fff"} />
+            </span>
+          ) : (
+            "Load More"
+          )}
         </button>
       </div>
     </div>

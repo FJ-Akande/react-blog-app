@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Input from "../../components/input/input.component";
 import SkillCard from "../../components/skill-card/skill-card.component";
+import { UserContext } from "../../contexts/user.context";
+import { addNewPost } from "../../utils/firebase/firebase.utils";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
+import { ClipLoader } from "react-spinners";
 
 const initialOptions = [
   {
@@ -87,10 +90,13 @@ const defaultFormFields = {
 };
 
 const CreateBlog = () => {
+  const { currentUser } = useContext(UserContext);
+
   const [selectOptions, setSelectOptions] = useState(initialOptions);
   const [levelOptions, setLevelOptions] = useState(initialLevelOptions);
 
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -138,15 +144,31 @@ const CreateBlog = () => {
     });
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     if (!formFields.skills.length && formFields.levelRequired !== "") {
-      errorToast("Fill empty inputs");
+      setLoading(false);
+      errorToast("Fill empty input field(s)");
       return;
     }
-    successToast("Post published!");
-    resetForm();
+
+    const post = {
+      ...formFields,
+      authorId: currentUser.uid,
+    };
+
+    try {
+      await addNewPost(post);
+      successToast("Post published!");
+      setLoading(false);
+      resetForm();
+    } catch (error) {
+      console.log(error.message);
+      errorToast(error.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -209,10 +231,16 @@ const CreateBlog = () => {
             </div>
           </div>
           <button
-            className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium"
+            className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium w-40"
             type="submit"
           >
-            Create blog
+            {loading ? (
+              <span className="flex items-center justify-center w-full">
+                <ClipLoader size={20} color={"#fff"} />
+              </span>
+            ) : (
+              "Create blog"
+            )}
           </button>
         </form>
       </div>

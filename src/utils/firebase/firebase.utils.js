@@ -9,10 +9,14 @@ import {
 import {
   getFirestore,
   doc,
+  collection,
   getDoc,
   setDoc,
   updateDoc,
+  addDoc,
+  arrayUnion,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -108,6 +112,40 @@ export const getUserProfile = async (userId) => {
     return null;
   }
 };
+
+export const addNewPost = async (post) => {
+  const postsCollectionRef = collection(db, "posts");
+  const newPost = {
+    ...post,
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+    comments: [],
+  };
+
+  try {
+    const docRef = await addDoc(postsCollectionRef, newPost);
+  } catch (error) {
+    console.error("Error adding document:", error);
+  }
+};
+
+// const addCommentToPost = async (postId, comment) => {
+//   const postDocRef = doc(db, "posts", postId);
+//   const newComment = {
+//     ...comment,
+//     createdAt: Timestamp.now(),
+//   };
+
+//   try {
+//     await updateDoc(postDocRef, {
+//       comments: arrayUnion(newComment),
+//       updatedAt: Timestamp.now(),
+//     });
+//     console.log("Comment added successfully");
+//   } catch (e) {
+//     console.error("Error adding comment: ", e);
+//   }
+// };
 
 export const signOutUser = async () => await signOut(auth);
 

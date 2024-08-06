@@ -6,7 +6,7 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import Input from "../../components/input/input.component";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
-import { BeatLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 
 const defaultFormFields = {
   displayName: "",
@@ -128,15 +128,15 @@ const Profile = () => {
           </div>
         </div>
         <button
-          className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium"
+          className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium w-40"
           type="submit"
         >
           {loading ? (
             <span className="flex items-center justify-center w-full">
-              <BeatLoader size={10} margin={2} color={"#fff"} />
+              <ClipLoader size={20} color={"#fff"} />
             </span>
           ) : (
-            "Save Changes"
+            "Save changes"
           )}
         </button>
       </form>
