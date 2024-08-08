@@ -8,15 +8,17 @@ import {
 } from "firebase/auth";
 import {
   getFirestore,
-  doc,
   collection,
+  doc,
   getDoc,
+  getDocs,
   setDoc,
   updateDoc,
   addDoc,
   arrayUnion,
+  query,
+  orderBy,
   serverTimestamp,
-  Timestamp,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -117,16 +119,30 @@ export const addNewPost = async (post) => {
   const postsCollectionRef = collection(db, "posts");
   const newPost = {
     ...post,
-    createdAt: Timestamp.now(),
-    updatedAt: Timestamp.now(),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
     comments: [],
   };
 
   try {
     const docRef = await addDoc(postsCollectionRef, newPost);
   } catch (error) {
-    console.error("Error adding document:", error);
+    console.error("Error adding document:", error.message);
   }
+};
+
+export const fetchPosts = async () => {
+  const postCollectionRef = collection(db, "posts");
+  const q = query(postCollectionRef, orderBy("createdAt", "desc"));
+
+  const postsSnapshot = await getDocs(q);
+
+  const postList = postsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return postList;
 };
 
 // const addCommentToPost = async (postId, comment) => {

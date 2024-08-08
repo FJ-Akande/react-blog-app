@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import Input from "../../components/input/input.component";
 import SkillCard from "../../components/skill-card/skill-card.component";
 import { UserContext } from "../../contexts/user.context";
@@ -91,12 +92,25 @@ const defaultFormFields = {
 
 const CreateBlog = () => {
   const { currentUser } = useContext(UserContext);
+  const queryClient = useQueryClient();
 
   const [selectOptions, setSelectOptions] = useState(initialOptions);
   const [levelOptions, setLevelOptions] = useState(initialLevelOptions);
 
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const [loading, setLoading] = useState(false);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: addNewPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      successToast("Post published!");
+      resetForm();
+    },
+    onError: (error) => {
+      console.log(error.message);
+      errorToast(error.message);
+    },
+  });
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -144,12 +158,10 @@ const CreateBlog = () => {
     });
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    setLoading(true);
 
     if (!formFields.skills.length && formFields.levelRequired !== "") {
-      setLoading(false);
       errorToast("Fill empty input field(s)");
       return;
     }
@@ -159,16 +171,7 @@ const CreateBlog = () => {
       authorId: currentUser.uid,
     };
 
-    try {
-      await addNewPost(post);
-      successToast("Post published!");
-      setLoading(false);
-      resetForm();
-    } catch (error) {
-      console.log(error.message);
-      errorToast(error.message);
-      setLoading(false);
-    }
+    mutate(post);
   };
 
   return (
@@ -234,7 +237,7 @@ const CreateBlog = () => {
             className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium w-40"
             type="submit"
           >
-            {loading ? (
+            {isPending ? (
               <span className="flex items-center justify-center w-full">
                 <ClipLoader size={20} color={"#fff"} />
               </span>
