@@ -18,6 +18,7 @@ import {
   arrayUnion,
   query,
   orderBy,
+  where,
   serverTimestamp,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -143,6 +144,21 @@ export const fetchPosts = async () => {
   }));
 
   return postList;
+};
+
+export const fetchUserPosts = async (userId) => {
+  if (!userId) return;
+
+  const postsRef = collection(db, "posts");
+  const q = query(postsRef, where("authorId", "==", userId));
+  const querySnapshot = await getDocs(q);
+
+  const userPosts = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return userPosts;
 };
 
 // const addCommentToPost = async (postId, comment) => {

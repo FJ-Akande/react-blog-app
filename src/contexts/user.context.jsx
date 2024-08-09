@@ -6,9 +6,7 @@ import {
 
 export const UserContext = createContext({
   currentUser: null,
-  setCurrentUser: () => null,
   currentUserProfile: null,
-  setCurrentUserProfile: () => null,
   loading: true,
 });
 

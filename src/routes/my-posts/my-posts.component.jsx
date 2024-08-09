@@ -1,14 +1,24 @@
-import { useContext, useEffect } from "react";
-import { PostsContext } from "../../contexts/posts.context";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoMdAdd } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import { UserContext } from "../../contexts/user.context";
+import { fetchUserPosts } from "../../utils/firebase/firebase.utils";
 import Card from "../../components/card/card.component";
+import { IoMdAdd } from "react-icons/io";
 
 const MyPosts = () => {
   const navigate = useNavigate();
-  const { posts, isLoading, isError } = useContext(PostsContext);
+  const { currentUser } = useContext(UserContext);
 
-  if (isLoading) return <div>Loading...</div>;
+  const {
+    data: posts = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["posts", currentUser?.uid],
+    queryFn: () => fetchUserPosts(currentUser.uid),
+    enabled: !!currentUser,
+  });
 
   return (
     <div className="py-24 max-w-[60%] mx-auto text-white">
@@ -25,14 +35,21 @@ const MyPosts = () => {
         </button>
       </div>
       <div className="mt-10 space-y-5">
-        {posts &&
+        {isLoading ? (
+          <div className="text-center">Loading...</div>
+        ) : isError ? (
+          <p className="text-center">An error occurred while fetching posts.</p>
+        ) : posts.length > 0 ? (
           posts.map((post) => (
             <Card
               key={post.id}
               post={post}
-              onClick={() => navigate("/details/1")}
+              onClick={() => navigate(`/details/${post.id}`)}
             />
-          ))}
+          ))
+        ) : (
+          <p className="text-center">No posts found.</p>
+        )}
         {/* <Card onClick={() => navigate("/details/1")} />
         <Card onClick={() => navigate("/details/1")} /> */}
       </div>
