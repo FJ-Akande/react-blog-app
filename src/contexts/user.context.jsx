@@ -26,6 +26,8 @@ export const UserProvider = ({ children }) => {
       if (user) {
         const profile = await getUserProfile(user.uid);
         setCurrentUserProfile(profile);
+      } else {
+        setCurrentUserProfile(null);
       }
     });
 
