@@ -1,9 +1,14 @@
+import { useContext, useEffect } from "react";
+import { PostsContext } from "../../contexts/posts.context";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import Card from "../../components/card/card.component";
 
 const MyPosts = () => {
   const navigate = useNavigate();
+  const { posts, isLoading, isError } = useContext(PostsContext);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="py-24 max-w-[60%] mx-auto text-white">
@@ -20,8 +25,16 @@ const MyPosts = () => {
         </button>
       </div>
       <div className="mt-10 space-y-5">
-        <Card onClick={() => navigate("/details/1")} />
-        <Card onClick={() => navigate("/details/1")} />
+        {posts &&
+          posts.map((post) => (
+            <Card
+              key={post.id}
+              post={post}
+              onClick={() => navigate("/details/1")}
+            />
+          ))}
+        {/* <Card onClick={() => navigate("/details/1")} />
+        <Card onClick={() => navigate("/details/1")} /> */}
       </div>
     </div>
   );

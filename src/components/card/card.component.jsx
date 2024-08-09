@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { UserContext } from "../../contexts/user.context";
 import ColorFulDiv from "../colorful-div/colorful-div.component";
@@ -22,9 +22,13 @@ const Card = ({ post, ...otherProps }) => {
     updatedAt,
   } = post;
 
-  if (currentUser.uid === authorId && location.pathname === "/my-posts") {
-    setShowDelete(true);
-  }
+  useEffect(() => {
+    if (currentUser?.uid === authorId && location.pathname === "/my-posts") {
+      setShowDelete(true);
+    } else {
+      setShowDelete(false);
+    }
+  }, [currentUser, authorId, location.pathname]);
 
   return (
     <div
