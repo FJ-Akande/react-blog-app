@@ -36,9 +36,11 @@ const MyPosts = () => {
       </div>
       <div className="mt-10 space-y-5">
         {isLoading ? (
-          <div className="text-center">Loading...</div>
+          <div className="text-center font-medium">Loading...</div>
         ) : isError ? (
-          <p className="text-center">An error occurred while fetching posts.</p>
+          <p className="text-center font-medium">
+            An error occurred while fetching posts.
+          </p>
         ) : posts.length > 0 ? (
           posts.map((post) => (
             <Card
@@ -48,7 +50,7 @@ const MyPosts = () => {
             />
           ))
         ) : (
-          <p className="text-center">No posts found.</p>
+          <p className="text-center font-medium">No posts found.</p>
         )}
         {/* <Card onClick={() => navigate("/details/1")} />
         <Card onClick={() => navigate("/details/1")} /> */}

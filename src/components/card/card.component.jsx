@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { UserContext } from "../../contexts/user.context";
 import ColorFulDiv from "../colorful-div/colorful-div.component";
 import { MdDelete } from "react-icons/md";
+import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
 
 const Card = ({ post, ...otherProps }) => {
   const { currentUser } = useContext(UserContext);
@@ -21,6 +22,8 @@ const Card = ({ post, ...otherProps }) => {
     title,
     updatedAt,
   } = post;
+
+  console.log(createdAt);
 
   useEffect(() => {
     if (currentUser?.uid === authorId && location.pathname === "/my-posts") {
@@ -56,23 +59,27 @@ const Card = ({ post, ...otherProps }) => {
         </h2>
       )}
       <div className="text-sm space-y-2">
+        <p className="font-medium">
+          {description?.split(" ").length > 25
+            ? `${description?.split(" ").slice(0, 25).join(" ")}...`
+            : description ||
+              `I am trying to figure out how to wireframe this new website...`}
+        </p>
         <p>
           Level Required -{" "}
-          <span className="font-bold">{levelRequired ?? "Expert"}</span> -
-          Posted 3 months ago
-        </p>
-        <p className="font-medium">
-          {description ??
-            "I am trying to figure out how to wireframe this new website..."}
+          <span className="font-bold">{levelRequired ?? "Expert"}</span> -{" "}
+          {formatRelativeTime(createdAt) ?? "Posted 3 months ago"}
         </p>
       </div>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <ColorFulDiv instance="1">Frontend</ColorFulDiv>
-          <ColorFulDiv instance="2">Backend</ColorFulDiv>
-          <ColorFulDiv instance="3">Fullstack</ColorFulDiv>
+          {skills.map((skill, index) => (
+            <ColorFulDiv instance={index + 1}>{skill}</ColorFulDiv>
+          ))}
         </div>
-        <p className="text-sm text-gray-400">May 1, 2024</p>
+        <p className="text-xs text-gray-400">
+          {dateFormatter(createdAt) ?? "May 1, 2024"}
+        </p>
       </div>
     </div>
   );

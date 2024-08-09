@@ -35,6 +35,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:18.3.0"],\
             ["@vitejs/plugin-react", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:4.3.1"],\
             ["autoprefixer", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:10.4.19"],\
+            ["date-fns", "npm:3.6.0"],\
             ["eslint", "npm:8.57.0"],\
             ["eslint-plugin-react", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:7.34.4"],\
             ["eslint-plugin-react-hooks", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:4.6.2"],\
@@ -3013,6 +3014,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["date-fns", [\
+        ["npm:3.6.0", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-3.6.0-e59d980978-0daa1e9a43.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:3.6.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["debug", [\
         ["npm:4.3.5", {\
           "packageLocation": "./.yarn/cache/debug-npm-4.3.5-b5001f59b7-7c002b51e2.zip/node_modules/debug/",\
@@ -5475,6 +5485,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:18.3.0"],\
             ["@vitejs/plugin-react", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:4.3.1"],\
             ["autoprefixer", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:10.4.19"],\
+            ["date-fns", "npm:3.6.0"],\
             ["eslint", "npm:8.57.0"],\
             ["eslint-plugin-react", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:7.34.4"],\
             ["eslint-plugin-react-hooks", "virtual:3457de3a74812b07065eb5364432da41ec0212ea7c4bcf92b7e4ec4766e4df675a392b22fb93420ae9588c0aedc096d4f0f0c382b57718319a62a13313cc94d0#npm:4.6.2"],\
