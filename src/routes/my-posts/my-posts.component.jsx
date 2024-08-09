@@ -52,8 +52,6 @@ const MyPosts = () => {
         ) : (
           <p className="text-center font-medium">No posts found.</p>
         )}
-        {/* <Card onClick={() => navigate("/details/1")} />
-        <Card onClick={() => navigate("/details/1")} /> */}
       </div>
     </div>
   );
