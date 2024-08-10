@@ -127,6 +127,13 @@ export const addNewPost = async (post) => {
 
   try {
     const docRef = await addDoc(postsCollectionRef, newPost);
+
+    const newPostSnapshot = await getDoc(docRef);
+
+    return {
+      id: docRef.id,
+      ...newPostSnapshot.data(),
+    };
   } catch (error) {
     console.error("Error adding document:", error.message);
   }

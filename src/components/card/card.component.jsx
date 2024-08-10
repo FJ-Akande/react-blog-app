@@ -23,8 +23,6 @@ const Card = ({ post, ...otherProps }) => {
     updatedAt,
   } = post;
 
-  console.log(createdAt);
-
   useEffect(() => {
     if (currentUser?.uid === authorId && location.pathname === "/my-posts") {
       setShowDelete(true);
@@ -74,7 +72,9 @@ const Card = ({ post, ...otherProps }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           {skills.map((skill, index) => (
-            <ColorFulDiv instance={index + 1}>{skill}</ColorFulDiv>
+            <ColorFulDiv instance={index + 1} key={index}>
+              {skill}
+            </ColorFulDiv>
           ))}
         </div>
         <p className="text-xs text-gray-400">

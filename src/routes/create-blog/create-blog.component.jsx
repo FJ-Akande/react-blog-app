@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import Input from "../../components/input/input.component";
 import SkillCard from "../../components/skill-card/skill-card.component";
@@ -93,6 +94,7 @@ const defaultFormFields = {
 const CreateBlog = () => {
   const { currentUser } = useContext(UserContext);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [selectOptions, setSelectOptions] = useState(initialOptions);
   const [levelOptions, setLevelOptions] = useState(initialLevelOptions);
@@ -101,10 +103,11 @@ const CreateBlog = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: addNewPost,
-    onSuccess: () => {
+    onSuccess: (newPost) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       successToast("Post published!");
       resetForm();
+      navigate(`/details/${newPost.id}`);
     },
     onError: (error) => {
       console.log(error.message);
