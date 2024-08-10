@@ -11,14 +11,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const { posts, isLoading, error } = useContext(PostsContext);
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error fetching posts: {error.message}</div>;
-  // }
-
   return (
     <div className="min-h-screen text-white py-24">
       <div className="max-w-3xl mx-auto my-10">
@@ -35,7 +27,6 @@ const Home = () => {
           </button>
         </div>
         <div className="my-10 space-y-6">
-          {/* <Card onClick={() => navigate("/details/1")} post={"loading"} /> */}
           {isLoading ? (
             <div className="font-medium text-center">Loading...</div>
           ) : error ? (
@@ -45,7 +36,11 @@ const Home = () => {
           ) : posts && posts.length > 0 ? (
             <>
               {posts.map((post) => (
-                <Card key={post.id} post={post} />
+                <Card
+                  key={post.id}
+                  post={post}
+                  onClick={() => navigate(`/details/${post.id}`)}
+                />
               ))}
               <button
                 type="button"

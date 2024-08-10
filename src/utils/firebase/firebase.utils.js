@@ -179,6 +179,34 @@ export const fetchUserPosts = async (userId) => {
 //   }
 // };
 
+export const fetchPostDetails = async (postId) => {
+  if (!postId) return;
+
+  const postDocRef = doc(db, "posts", postId);
+  const postSnapshot = await getDoc(postDocRef);
+
+  let postDetails = null;
+  let authorDetails = null;
+
+  if (postSnapshot.exists()) {
+    postDetails = postSnapshot.data();
+
+    const authorDocRef = doc(db, "users", postDetails.authorId);
+    const authorSnapshot = await getDoc(authorDocRef);
+
+    if (authorSnapshot.exists()) {
+      authorDetails = authorSnapshot.data();
+    } else {
+      throw new Error("Author not found");
+    }
+  } else {
+    console.error("Post does not exist");
+    return null;
+  }
+
+  return { postDetails, authorDetails };
+};
+
 export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
