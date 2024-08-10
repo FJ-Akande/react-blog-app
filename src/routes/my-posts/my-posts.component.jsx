@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/user.context";
 import { fetchUserPosts } from "../../utils/firebase/firebase.utils";
 import Card from "../../components/card/card.component";
+import Spinner from "../../components/spinner/spinner.component";
 import { IoMdAdd } from "react-icons/io";
 
 const MyPosts = () => {
@@ -36,7 +37,9 @@ const MyPosts = () => {
       </div>
       <div className="mt-10 space-y-5">
         {isLoading ? (
-          <div className="text-center font-medium">Loading...</div>
+          <div>
+            <Spinner />
+          </div>
         ) : isError ? (
           <p className="text-center font-medium">
             An error occurred while fetching posts.

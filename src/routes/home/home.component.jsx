@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../contexts/posts.context";
 import Card from "../../components/card/card.component";
+import Spinner from "../../components/spinner/spinner.component";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
 
@@ -28,7 +29,9 @@ const Home = () => {
         </div>
         <div className="my-10 space-y-6">
           {isLoading ? (
-            <div className="font-medium text-center">Loading...</div>
+            <div>
+              <Spinner />
+            </div>
           ) : error ? (
             <div className="font-medium text-red-500 text-center">
               Error fetching posts: {error.message}

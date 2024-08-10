@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import ColorFulDiv from "../../components/colorful-div/colorful-div.component";
+import Spinner from "../../components/spinner/spinner.component";
 import { FaGithub } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -21,7 +22,12 @@ const DetailPage = () => {
     enabled: !!id,
   });
 
-  if (!post) return <div>Loading...</div>;
+  if (!post)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Spinner />
+      </div>
+    );
 
   const { postDetails, authorDetails } = post;
 
