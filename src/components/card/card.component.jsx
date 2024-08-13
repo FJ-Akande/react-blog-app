@@ -1,18 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/user.context";
+import { deletePost } from "../../utils/firebase/firebase.utils";
+import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
+import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import ColorFulDiv from "../colorful-div/colorful-div.component";
 import { MdDelete } from "react-icons/md";
-import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
 
 const Card = ({ post, ...otherProps }) => {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
+  const queryClient = useQueryClient();
   const [showDelete, setShowDelete] = useState(false);
 
   if (!post) return <div>Loading...</div>;
 
   const {
+    id,
     authorId,
     comments,
     createdAt,
@@ -31,6 +36,26 @@ const Card = ({ post, ...otherProps }) => {
     }
   }, [currentUser, authorId, location.pathname]);
 
+  const mutation = useMutation({
+    mutationFn: deletePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries("posts");
+      successToast("Post deleted");
+    },
+    onError: (error) => {
+      errorToast("Error deleting post:", error.message);
+    },
+  });
+
+  const handleDeletePost = async (postId) => {
+    const confirmation = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (confirmation) {
+      mutation.mutate(id);
+    }
+  };
+
   return (
     <div
       className="bg-primary p-5 rounded-xl space-y-5 cursor-pointer"
@@ -45,7 +70,7 @@ const Card = ({ post, ...otherProps }) => {
             className="flex items-center justify-center bg-secondary rounded-full p-1"
             onClick={(e) => {
               e.stopPropagation();
-              alert("clicked!");
+              handleDeletePost(id);
             }}
           >
             <MdDelete className="text-red-400 text-lg" />

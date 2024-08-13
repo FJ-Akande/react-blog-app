@@ -10,11 +10,12 @@ import {
   getFirestore,
   collection,
   doc,
+  addDoc,
   getDoc,
-  getDocs,
   setDoc,
   updateDoc,
-  addDoc,
+  deleteDoc,
+  getDocs,
   arrayUnion,
   query,
   orderBy,
@@ -157,7 +158,11 @@ export const fetchUserPosts = async (userId) => {
   if (!userId) return;
 
   const postsRef = collection(db, "posts");
-  const q = query(postsRef, where("authorId", "==", userId));
+  const q = query(
+    postsRef,
+    where("authorId", "==", userId)
+    // orderBy("createdAt", "desc") // come back to this!
+  );
   const querySnapshot = await getDocs(q);
 
   const userPosts = querySnapshot.docs.map((doc) => ({
@@ -212,6 +217,17 @@ export const fetchPostDetails = async (postId) => {
   }
 
   return { postDetails, authorDetails };
+};
+
+export const deletePost = async (postId) => {
+  if (!postId) return;
+
+  try {
+    const postDocRef = doc(db, "posts", postId);
+    await deleteDoc(postDocRef);
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 export const signOutUser = async () => await signOut(auth);
