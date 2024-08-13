@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/user.context";
@@ -12,7 +12,6 @@ const Card = ({ post, ...otherProps }) => {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
   const queryClient = useQueryClient();
-  const [showDelete, setShowDelete] = useState(false);
 
   if (!post) return <div>Loading...</div>;
 
@@ -28,13 +27,10 @@ const Card = ({ post, ...otherProps }) => {
     updatedAt,
   } = post;
 
-  useEffect(() => {
-    if (currentUser?.uid === authorId && location.pathname === "/my-posts") {
-      setShowDelete(true);
-    } else {
-      setShowDelete(false);
-    }
-  }, [currentUser, authorId, location.pathname]);
+  const showDelete = useMemo(
+    () => currentUser?.uid === authorId && location.pathname === "/my-posts",
+    [currentUser, authorId, location.pathname]
+  );
 
   const mutation = useMutation({
     mutationFn: deletePost,
@@ -47,7 +43,7 @@ const Card = ({ post, ...otherProps }) => {
     },
   });
 
-  const handleDeletePost = async (postId) => {
+  const handleDeletePost = async () => {
     const confirmation = window.confirm(
       "Are you sure you want to delete this post?"
     );
@@ -63,9 +59,7 @@ const Card = ({ post, ...otherProps }) => {
     >
       {showDelete ? (
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-medium">
-            {title ?? "Need help with wireframe"}
-          </h2>
+          <h2 className="text-xl font-medium">{title}</h2>
           <button
             className="flex items-center justify-center bg-secondary rounded-full p-1"
             onClick={(e) => {
@@ -77,20 +71,16 @@ const Card = ({ post, ...otherProps }) => {
           </button>
         </div>
       ) : (
-        <h2 className="text-xl font-medium">
-          {title ?? "Need help with wireframe"}
-        </h2>
+        <h2 className="text-xl font-medium">{title}</h2>
       )}
       <div className="text-sm space-y-2">
         <p className="font-medium">
           {description?.split(" ").length > 25
             ? `${description?.split(" ").slice(0, 25).join(" ")}...`
-            : description ||
-              `I am trying to figure out how to wireframe this new website...`}
+            : description}
         </p>
         <p>
-          Level Required -{" "}
-          <span className="font-bold">{levelRequired ?? "Expert"}</span> -{" "}
+          Level Required - <span className="font-bold">{levelRequired}</span> -{" "}
           {formatRelativeTime(createdAt) ?? "Posted 3 months ago"}
         </p>
       </div>
@@ -102,9 +92,7 @@ const Card = ({ post, ...otherProps }) => {
             </ColorFulDiv>
           ))}
         </div>
-        <p className="text-xs text-gray-400">
-          {dateFormatter(createdAt) ?? "May 1, 2024"}
-        </p>
+        <p className="text-xs text-gray-400">{dateFormatter(createdAt)}</p>
       </div>
     </div>
   );

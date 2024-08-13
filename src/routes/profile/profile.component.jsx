@@ -1,9 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/user.context";
-import {
-  updateUserProfile,
-  getUserProfile,
-} from "../../utils/firebase/firebase.utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateUserProfile } from "../../utils/firebase/firebase.utils";
 import Input from "../../components/input/input.component";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import { ClipLoader } from "react-spinners";
@@ -20,6 +18,7 @@ const Profile = () => {
   const { currentUser, currentUserProfile } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (currentUserProfile) {
@@ -32,6 +31,20 @@ const Profile = () => {
       });
     }
   }, [currentUserProfile]);
+
+  const mutation = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userProfile", currentUser.uid]);
+      setLoading(false);
+      successToast("Profile updated");
+    },
+    onError: (error) => {
+      queryClient.invalidateQueries(["userProfile", currentUser.uid]);
+      setLoading(false);
+      errorToast(error.message);
+    },
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,18 +71,20 @@ const Profile = () => {
       return;
     }
 
-    try {
-      await updateUserProfile(currentUser.uid, formFields);
-      window.location.reload();
-      setLoading(false);
-      successToast("Profile updated");
-    } catch (error) {
-      console.error("Error updating profile: ", error);
-      const updatedProfile = await getUserProfile(currentUser.uid);
-      setFormFields(updatedProfile);
-      setLoading(false);
-      errorToast(error.message);
-    }
+    mutation.mutate({ userId: currentUser.uid, profileData: formFields });
+
+    // try {
+    //   await updateUserProfile(currentUser.uid, formFields);
+    //   window.location.reload();
+    //   setLoading(false);
+    //   successToast("Profile updated");
+    // } catch (error) {
+    //   console.error("Error updating profile: ", error);
+    //   const updatedProfile = await getUserProfile(currentUser.uid);
+    //   setFormFields(updatedProfile);
+    //   setLoading(false);
+    //   errorToast(error.message);
+    // }
   };
 
   return (

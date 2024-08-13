@@ -79,7 +79,7 @@ export const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
-export const updateUserProfile = async (userId, profileData) => {
+export const updateUserProfile = async ({ userId, profileData }) => {
   if (!userId) return;
 
   const userDocRef = doc(db, "users", userId);
