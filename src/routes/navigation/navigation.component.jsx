@@ -1,24 +1,32 @@
 import { useContext, useRef, useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/user.context";
+import Footer from "../../components/footer/footer.component";
+import ProfileDropdown from "../../components/profile-dropdown/profile-dropdown.component";
+import userDp from "../../assets/userdp.png";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
 import { FaCircleQuestion } from "react-icons/fa6";
-import Footer from "../../components/footer/footer.component";
-import ProfileDropdown from "../../components/profile-dropdown/profile-dropdown.component";
-import userDp from "../../assets/userdp.png";
-import { UserContext } from "../../contexts/user.context";
+import { ClipLoader } from "react-spinners";
 
 const Navigation = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, loading } = useContext(UserContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
+  const toggleDropdown = (event) => {
+    event.stopPropagation();
+    setDropdownVisible(!dropdownVisible);
+  };
 
   const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      !event.target.closest(".profile-dropdown")
+    ) {
       setDropdownVisible(false);
     }
   };
@@ -75,7 +83,7 @@ const Navigation = () => {
             ))}
           </ul>
           {currentUser ? (
-            <div className="relative">
+            <div className="profile-dropdown relative">
               <div
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={toggleDropdown}
@@ -92,6 +100,10 @@ const Navigation = () => {
                 isVisible={dropdownVisible}
                 toggleDropdown={toggleDropdown}
               />
+            </div>
+          ) : loading ? (
+            <div className="h-10 flex items-center justify-center">
+              <ClipLoader size={22} color={"#fff"} />
             </div>
           ) : (
             <button

@@ -17,7 +17,6 @@ const defaultFormFields = {
 const Profile = () => {
   const { currentUser, currentUserProfile } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -36,12 +35,10 @@ const Profile = () => {
     mutationFn: updateUserProfile,
     onSuccess: () => {
       queryClient.invalidateQueries(["userProfile", currentUser.uid]);
-      setLoading(false);
       successToast("Profile updated");
     },
     onError: (error) => {
       queryClient.invalidateQueries(["userProfile", currentUser.uid]);
-      setLoading(false);
       errorToast(error.message);
     },
   });
@@ -57,7 +54,6 @@ const Profile = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
 
     if (
       formFields.displayName === currentUserProfile.displayName &&
@@ -67,24 +63,10 @@ const Profile = () => {
       formFields.twitter === currentUserProfile.twitter
     ) {
       errorToast("No changes made");
-      setLoading(false);
       return;
     }
 
     mutation.mutate({ userId: currentUser.uid, profileData: formFields });
-
-    // try {
-    //   await updateUserProfile(currentUser.uid, formFields);
-    //   window.location.reload();
-    //   setLoading(false);
-    //   successToast("Profile updated");
-    // } catch (error) {
-    //   console.error("Error updating profile: ", error);
-    //   const updatedProfile = await getUserProfile(currentUser.uid);
-    //   setFormFields(updatedProfile);
-    //   setLoading(false);
-    //   errorToast(error.message);
-    // }
   };
 
   return (
@@ -146,7 +128,7 @@ const Profile = () => {
           className="bg-transparent rounded-lg border border-gray-700 text-white p-3 font-medium w-40"
           type="submit"
         >
-          {loading ? (
+          {mutation.isPending ? (
             <span className="flex items-center justify-center w-full">
               <ClipLoader size={20} color={"#fff"} />
             </span>

@@ -22,7 +22,6 @@ const ProfileDropdown = forwardRef(({ isVisible, toggleDropdown }, ref) => {
         Profile
       </Link>
       <Link
-        text-sm
         to="/my-posts"
         className="flex items-center gap-3 px-4 py-3 border-t border-b border-gray-700 text-sm hover:bg-secondary"
         onClick={toggleDropdown}
