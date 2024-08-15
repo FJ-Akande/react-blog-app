@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../contexts/posts.context";
 import Card from "../../components/card/card.component";
@@ -9,8 +9,14 @@ import { BeatLoader } from "react-spinners";
 const Home = () => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
-  const { posts, isLoading, error } = useContext(PostsContext);
+  const {
+    posts,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useContext(PostsContext);
 
   return (
     <div className="min-h-screen text-white py-24">
@@ -45,19 +51,22 @@ const Home = () => {
                   onClick={() => navigate(`/details/${post.id}`)}
                 />
               ))}
-              <button
-                type="button"
-                className="bg-primary my-4 py-2 text-center w-full rounded-lg font-medium h-10"
-                onClick={() => setLoading(!loading)}
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center w-full h-full">
-                    <BeatLoader size={10} margin={2} color={"#fff"} />
-                  </span>
-                ) : (
-                  "Load More"
-                )}
-              </button>
+              {hasNextPage && (
+                <button
+                  type="button"
+                  className="bg-primary my-4 py-2 text-center w-full rounded-lg font-medium h-10"
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? (
+                    <span className="flex items-center justify-center w-full h-full">
+                      <BeatLoader size={10} margin={2} color={"#fff"} />
+                    </span>
+                  ) : (
+                    "Load More"
+                  )}
+                </button>
+              )}
             </>
           ) : (
             <div className="font-medium text-sm text-center">

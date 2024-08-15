@@ -19,6 +19,8 @@ import {
   arrayUnion,
   query,
   orderBy,
+  limit,
+  startAfter,
   where,
   serverTimestamp,
 } from "firebase/firestore";
@@ -140,18 +142,36 @@ export const addNewPost = async (post) => {
   }
 };
 
-export const fetchPosts = async () => {
-  const postCollectionRef = collection(db, "posts");
-  const q = query(postCollectionRef, orderBy("createdAt", "desc"));
+export const fetchPosts = async ({ pageParam = null }) => {
+  const postsRef = collection(db, "posts");
 
-  const postsSnapshot = await getDocs(q);
+  // Build the query: If `pageParam` is present, apply `startAfter` for pagination
+  const postsQuery = pageParam
+    ? query(
+        postsRef,
+        orderBy("createdAt", "desc"),
+        startAfter(pageParam),
+        limit(3)
+      )
+    : query(postsRef, orderBy("createdAt", "desc"), limit(3));
 
-  const postList = postsSnapshot.docs.map((doc) => ({
+  // Execute the query
+  const querySnapshot = await getDocs(postsQuery);
+
+  // Map the results to an array of posts
+  const posts = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
 
-  return postList;
+  // Find the last visible document in the query for pagination
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+  // Return the posts and the next cursor (if available)
+  return {
+    posts,
+    nextCursor: lastVisible || null, // Return null if no more posts
+  };
 };
 
 export const fetchUserPosts = async (userId) => {
