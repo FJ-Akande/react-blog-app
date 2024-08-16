@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../contexts/posts.context";
 import Card from "../../components/card/card.component";
 import Spinner from "../../components/spinner/spinner.component";
 import { IoMdAdd } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
+// import { infoToast } from "../../utils/toast/toast.utils";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ const Home = () => {
     isLoading,
     error,
   } = useContext(PostsContext);
+
+  // useEffect(() => {
+  //   infoToast("toast");
+  // }, []);
+
+  // if (!hasNextPage) {
+  //   infoToast("No more posts!");
+  // }
 
   return (
     <div className="min-h-screen text-white py-24">

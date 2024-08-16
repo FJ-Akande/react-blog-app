@@ -1,16 +1,26 @@
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { UserContext } from "../../contexts/user.context";
+import {
+  addCommentToPost,
+  fetchPostDetails,
+} from "../../utils/firebase/firebase.utils";
+import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
 import ColorFulDiv from "../../components/colorful-div/colorful-div.component";
 import Spinner from "../../components/spinner/spinner.component";
+import userdp from "../../assets/userdp.png";
+import { errorToast } from "../../utils/toast/toast.utils";
 import { FaGithub } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import userdp from "../../assets/userdp.png";
-import { fetchPostDetails } from "../../utils/firebase/firebase.utils";
-import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
+import { IoIosSend } from "react-icons/io";
 
 const DetailPage = () => {
+  const { currentUserProfile } = useContext(UserContext);
+  const [comment, setComment] = useState("");
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const {
     data: post,
@@ -22,10 +32,46 @@ const DetailPage = () => {
     enabled: !!id,
   });
 
-  if (!post)
+  const mutation = useMutation({
+    mutationFn: addCommentToPost,
+    onSuccess: () => {
+      setComment("");
+      queryClient.invalidateQueries(["post", id]);
+    },
+    onError: (error) => {
+      errorToast(error.message);
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!comment) return;
+
+    const commentData = {
+      text: comment,
+      user: currentUserProfile.displayName, // or currentUser.uid
+    };
+
+    mutation.mutate({ postId: id, comment: commentData });
+  };
+
+  if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Spinner />
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Error loading post</p>
+      </div>
+    );
+
+  if (!post)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>No post found</p>
       </div>
     );
 
@@ -68,6 +114,35 @@ const DetailPage = () => {
                 {formatRelativeTime(postDetails.createdAt)}
               </p>
             </div>
+            <div className="my-12 border-t border-text pt-4">
+              <div className="space-y-6 max-h-[220px] overflow-y-scroll custom-scrollbar pb-5">
+                <h3 className="font-medium">Comments</h3>
+                {postDetails?.comments?.length == 0 && (
+                  <p className="text-sm text-text">no comments found.</p>
+                )}
+                {postDetails?.comments.map(({ text, user, createdAt }) => (
+                  <CommentCard text={text} user={user} createdAt={createdAt} />
+                ))}
+              </div>
+              <div className="w-full mt-5 relative flex items-center">
+                <input
+                  type="text"
+                  className="bg-transparent w-full rounded-lg focus:ring-0 outline-none text-sm placeholder:text-sm py-3"
+                  placeholder="write a comment..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className={`absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600 ${
+                    mutation.isPending && "bg-text"
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  <IoIosSend className="text-xl" />
+                </button>
+              </div>
+            </div>
             <p className="text-xs text-text">
               Posted on {dateFormatter(postDetails.createdAt)}
             </p>
@@ -107,3 +182,22 @@ const DetailPage = () => {
 };
 
 export default DetailPage;
+
+const CommentCard = ({ text, user, createdAt }) => {
+  return (
+    <div className="flex items-start gap-4">
+      <img
+        src={userdp}
+        alt="userdp"
+        className="h-10 w-10 rounded-full bg-black"
+      />
+      <div className="text-sm">
+        <p className="font-medium">{user}</p>
+        <p className="text-text mt-1">
+          {text} -{" "}
+          <span className="text-xs">{formatRelativeTime(createdAt)}</span>
+        </p>
+      </div>
+    </div>
+  );
+};

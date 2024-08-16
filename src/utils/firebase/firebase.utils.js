@@ -193,23 +193,23 @@ export const fetchUserPosts = async (userId) => {
   return userPosts;
 };
 
-// const addCommentToPost = async (postId, comment) => {
-//   const postDocRef = doc(db, "posts", postId);
-//   const newComment = {
-//     ...comment,
-//     createdAt: Timestamp.now(),
-//   };
+export const addCommentToPost = async ({ postId, comment }) => {
+  const postRef = doc(db, "posts", postId);
 
-//   try {
-//     await updateDoc(postDocRef, {
-//       comments: arrayUnion(newComment),
-//       updatedAt: Timestamp.now(),
-//     });
-//     console.log("Comment added successfully");
-//   } catch (e) {
-//     console.error("Error adding comment: ", e);
-//   }
-// };
+  const commentWithTimestamp = {
+    ...comment,
+    createdAt: new Date(),
+  };
+
+  try {
+    await updateDoc(postRef, {
+      comments: arrayUnion(commentWithTimestamp),
+    });
+  } catch (error) {
+    console.error("Error adding comment: ", error);
+    throw error;
+  }
+};
 
 export const fetchPostDetails = async (postId) => {
   if (!postId) return;

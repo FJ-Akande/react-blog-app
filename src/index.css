@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+        /* Set the scrollbar width */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+        /* Scrollbar track color */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #6B7280;
+        /* Scrollbar thumb color */
+        border-radius: 10px;
+        /* Scrollbar thumb rounded corners */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+        /* Scrollbar thumb hover color */
+    }
+}
+
+/* Hide scrollbar but still allow scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
