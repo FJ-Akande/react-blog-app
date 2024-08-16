@@ -46,6 +46,11 @@ const DetailPage = () => {
   const handleSubmit = () => {
     if (!comment) return;
 
+    if (!currentUserProfile || !currentUserProfile.displayName) {
+      errorToast("You must be signed in to post a comment");
+      return;
+    }
+
     const commentData = {
       text: comment,
       user: currentUserProfile.displayName, // or currentUser.uid
@@ -120,8 +125,13 @@ const DetailPage = () => {
                 {postDetails?.comments?.length == 0 && (
                   <p className="text-sm text-text">no comments found.</p>
                 )}
-                {postDetails?.comments.map(({ text, user, createdAt }) => (
-                  <CommentCard text={text} user={user} createdAt={createdAt} />
+                {postDetails?.comments.map(({ text, user, createdAt }, idx) => (
+                  <CommentCard
+                    key={idx}
+                    text={text}
+                    user={user}
+                    createdAt={createdAt}
+                  />
                 ))}
               </div>
               <div className="w-full mt-5 relative flex items-center">
