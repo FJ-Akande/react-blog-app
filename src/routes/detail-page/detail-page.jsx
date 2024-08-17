@@ -69,7 +69,7 @@ const DetailPage = () => {
   if (isError)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Error loading post</p>
+        <p className="text-red-500">Error loading post</p>
       </div>
     );
 
@@ -81,21 +81,6 @@ const DetailPage = () => {
     );
 
   const { postDetails, authorDetails } = post;
-
-  const openSocialPage = (platform, handleOrLink) => {
-    let url;
-    switch (platform) {
-      case "twitter":
-        url = `https://twitter.com/${handleOrLink}`;
-        break;
-      case "discord":
-        url = handleOrLink; // handleOrLink should be the full invite link for Discord
-        break;
-      default:
-        return;
-    }
-    window.open(url, "_blank");
-  };
 
   return (
     <div className="bg-secondary text-white min-h-screen py-24">
@@ -119,7 +104,7 @@ const DetailPage = () => {
                 {formatRelativeTime(postDetails.createdAt)}
               </p>
             </div>
-            <div className="my-12 border-t border-text pt-4">
+            <div className="mt-12 mb-4 border-t border-text pt-4">
               <div className="space-y-6 max-h-[220px] overflow-y-scroll custom-scrollbar pb-5">
                 <h3 className="font-medium">Comments</h3>
                 {postDetails?.comments?.length == 0 && (
@@ -158,27 +143,38 @@ const DetailPage = () => {
             </p>
           </div>
           <div className="bg-[#1B232E] w-[30%] py-8 flex flex-col items-center px-10">
-            <img
-              src={userdp}
-              alt="userdp"
-              className="bg-black rounded-full object-cover w-[10rem] h-[10rem]"
-            />
-            <div className="flex flex-col items-center text-center py-6 border-b border-gray-700">
-              <h3 className="font-semibold text-xl">
-                {authorDetails.displayName}
-              </h3>
-              <p className="text-sm text-text py-5">{authorDetails.bio}</p>
-              <div className="my-14 flex items-center gap-3">
-                {/* <FaGithub className="text-2xl" /> */}
-                <FaXTwitter
-                  className="text-2xl cursor-pointer"
-                  onClick={() =>
-                    openSocialPage("twitter", authorDetails.twitter)
-                  }
+            <div className="flex flex-1 flex-col items-center border-b border-text">
+              <div className="flex flex-col items-center">
+                <img
+                  src={userdp}
+                  alt="userdp"
+                  className="bg-black rounded-full object-cover w-[10rem] h-[10rem]"
                 />
-                {authorDetails.discord && (
-                  <FaDiscord className="text-2xl cursor-pointer" />
-                )}
+                <div className="flex flex-col items-center text-center py-6">
+                  <h3 className="font-semibold text-xl">
+                    {authorDetails.displayName}
+                  </h3>
+                  <p className="text-sm text-text py-5">{authorDetails.bio}</p>
+                </div>
+              </div>
+
+              <div className="flex-1 flex items-center justify-center my-auto">
+                <div className="flex items-center gap-3">
+                  {authorDetails.twitter && (
+                    <FaXTwitter
+                      className="text-2xl cursor-pointer"
+                      onClick={() =>
+                        window.open(
+                          `https://twitter.com/${authorDetails.twitter}`,
+                          "_blank"
+                        )
+                      }
+                    />
+                  )}
+                  {authorDetails.discord && (
+                    <FaDiscord className="text-2xl cursor-pointer" />
+                  )}
+                </div>
               </div>
             </div>
             <p className="text-xs text-text pt-4">
