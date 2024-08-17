@@ -16,8 +16,7 @@ const Navigation = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const toggleDropdown = (event) => {
-    event.stopPropagation();
+  const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
