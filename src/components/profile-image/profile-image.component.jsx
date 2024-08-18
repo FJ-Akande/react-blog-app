@@ -3,7 +3,7 @@ import { FaCamera } from "react-icons/fa";
 const ProfileImageUpload = ({ imagePreview, imageURL, ...props }) => {
   return (
     <div className="flex flex-col items-start">
-      <div className="relative bg-black rounded-full">
+      <div className="relative rounded-full">
         <img
           src={imagePreview || imageURL}
           alt="Profile"

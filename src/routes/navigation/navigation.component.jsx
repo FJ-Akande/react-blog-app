@@ -87,11 +87,17 @@ const Navigation = () => {
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={toggleDropdown}
               >
-                <img
-                  src={currentUserProfile?.imageURL || defaultImageURL}
-                  alt="display-picture"
-                  className="h-10 w-10 bg-black rounded-full object-cover"
-                />
+                {currentUserProfile?.imageURL ? (
+                  <img
+                    src={currentUserProfile?.imageURL}
+                    alt="display-picture"
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="h-10 w-10 bg-[#1f2937] rounded-full flex items-center justify-center">
+                    <ClipLoader size={20} color={"#6b7280"} />
+                  </div>
+                )}
                 <IoIosArrowDown className="text-xl text-gray-500" />
               </div>
               <ProfileDropdown
@@ -102,7 +108,7 @@ const Navigation = () => {
             </div>
           ) : loading ? (
             <div className="h-10 flex items-center justify-center">
-              <ClipLoader size={22} color={"#fff"} />
+              <ClipLoader size={22} color={"#6b7280"} />
             </div>
           ) : (
             <button

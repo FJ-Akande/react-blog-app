@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserProfile } from "../../utils/firebase/firebase.utils";
 import Input from "../../components/input/input.component";
 import ProfileImageUpload from "../../components/profile-image/profile-image.component";
+import Spinner from "../../components/spinner/spinner.component";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import { ClipLoader } from "react-spinners";
 
@@ -19,6 +20,7 @@ const Profile = () => {
   const { currentUser, currentUserProfile, defaultImageURL } =
     useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const queryClient = useQueryClient();
@@ -32,6 +34,7 @@ const Profile = () => {
         discord: currentUserProfile.discord || "",
         twitter: currentUserProfile.twitter || "",
       });
+      setIsLoading(false);
     }
   }, [currentUserProfile]);
 
@@ -90,11 +93,17 @@ const Profile = () => {
   return (
     <div className="max-w-[80%] mx-auto py-24 text-white">
       <h2 className="text-2xl font-semibold mb-10">Profile</h2>
-      <ProfileImageUpload
-        imagePreview={imagePreview}
-        imageURL={currentUserProfile?.imageURL || defaultImageURL}
-        onChange={handleImageChange}
-      />
+      {!isLoading ? (
+        <ProfileImageUpload
+          imagePreview={imagePreview}
+          imageURL={currentUserProfile?.imageURL || defaultImageURL}
+          onChange={handleImageChange}
+        />
+      ) : (
+        <div className="w-36 h-36 rounded-full bg-gray-600 flex items-center justify-center">
+          <Spinner />
+        </div>
+      )}
       <form className="my-8 space-y-6" onSubmit={handleFormSubmit}>
         <Input
           label="Name"
