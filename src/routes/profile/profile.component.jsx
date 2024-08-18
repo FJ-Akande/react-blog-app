@@ -3,6 +3,7 @@ import { UserContext } from "../../contexts/user.context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserProfile } from "../../utils/firebase/firebase.utils";
 import Input from "../../components/input/input.component";
+import ProfileImageUpload from "../../components/profile-image/profile-image.component";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import { ClipLoader } from "react-spinners";
 
@@ -14,9 +15,14 @@ const defaultFormFields = {
   twitter: "",
 };
 
+const defaultImageUrl =
+  "https://firebasestorage.googleapis.com/v0/b/cannabud-ny.appspot.com/o/defaultProfileImage.png?alt=media&token=73c17e7a-c52c-4d1c-9c40-6c6429367928";
+
 const Profile = () => {
   const { currentUser, currentUserProfile } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -35,6 +41,7 @@ const Profile = () => {
     mutationFn: updateUserProfile,
     onSuccess: () => {
       queryClient.invalidateQueries(["userProfile", currentUser.uid]);
+      setImagePreview(null);
       successToast("Profile updated");
     },
     onError: (error) => {
@@ -42,6 +49,14 @@ const Profile = () => {
       errorToast(error.message);
     },
   });
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -60,19 +75,29 @@ const Profile = () => {
       formFields.bio === currentUserProfile.bio &&
       formFields.techStacks === currentUserProfile.techStacks &&
       formFields.discord === currentUserProfile.discord &&
-      formFields.twitter === currentUserProfile.twitter
+      formFields.twitter === currentUserProfile.twitter &&
+      !image
     ) {
       errorToast("No changes made");
       return;
     }
 
-    mutation.mutate({ userId: currentUser.uid, profileData: formFields });
+    mutation.mutate({
+      userId: currentUser.uid,
+      profileData: formFields,
+      imageFile: image,
+    });
   };
 
   return (
     <div className="max-w-[80%] mx-auto py-24 text-white">
-      <h2 className="text-2xl font-semibold">Profile</h2>
-      <form className="my-10 space-y-6" onSubmit={handleFormSubmit}>
+      <h2 className="text-2xl font-semibold mb-10">Profile</h2>
+      <ProfileImageUpload
+        imagePreview={imagePreview}
+        imageURL={currentUserProfile?.imageURL || defaultImageUrl}
+        onChange={handleImageChange}
+      />
+      <form className="my-8 space-y-6" onSubmit={handleFormSubmit}>
         <Input
           label="Name"
           type="text"

@@ -24,7 +24,7 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCy76C_goWgKIv5jzZHSscxe_6WECIjexs",
@@ -81,22 +81,38 @@ export const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
-export const updateUserProfile = async ({ userId, profileData }) => {
+export const updateUserProfile = async ({ userId, profileData, imageFile }) => {
   if (!userId) return;
 
   const userDocRef = doc(db, "users", userId);
   const userSnapshot = await getDoc(userDocRef);
   const lastUpdated = userSnapshot.data().lastUpdated;
 
-  //Function to check if an hour has passed since the last update
+  // Check if an hour has passed since the last update
   const now = new Date();
   if (lastUpdated && now - lastUpdated.toDate() < 3600000) {
     throw new Error("You can only update your profile once every hour.");
   }
 
+  let imageURL = profileData.imageURL; // Default to existing imageURL
+
+  // Upload image if provided
+  if (imageFile) {
+    const storageRef = ref(storage, `profileImages/${userId}`);
+    try {
+      await uploadBytes(storageRef, imageFile);
+      imageURL = await getDownloadURL(storageRef);
+    } catch (error) {
+      console.error("Error uploading image", error.message);
+      throw new Error("Image upload failed.");
+    }
+  }
+
+  // Update profile with image URL and other details
   try {
     await updateDoc(userDocRef, {
       ...profileData,
+      imageURL, // Use the new or existing image URL
       lastUpdated: serverTimestamp(),
     });
   } catch (error) {

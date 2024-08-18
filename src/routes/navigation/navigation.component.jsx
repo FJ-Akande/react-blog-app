@@ -62,7 +62,7 @@ const Navigation = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="fixed w-full top-0 bg-primary border-b border-gray-700 text-white">
+      <div className="fixed w-full top-0 z-50 bg-primary border-b border-gray-700 text-white">
         <div className="flex items-center justify-between max-w-[80%] mx-auto py-3">
           <NavLink to="/">
             <h1 className="font-bold text-lg">QuickQuestion</h1>

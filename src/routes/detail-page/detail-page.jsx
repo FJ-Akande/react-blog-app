@@ -177,7 +177,7 @@ const DetailPage = () => {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-text pt-4">
+            <p className="text-xs text-text pt-4 text-center">
               Member since {dateFormatter(authorDetails.createdAt)}
             </p>
           </div>
