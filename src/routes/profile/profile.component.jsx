@@ -15,11 +15,9 @@ const defaultFormFields = {
   twitter: "",
 };
 
-const defaultImageUrl =
-  "https://firebasestorage.googleapis.com/v0/b/cannabud-ny.appspot.com/o/defaultProfileImage.png?alt=media&token=73c17e7a-c52c-4d1c-9c40-6c6429367928";
-
 const Profile = () => {
-  const { currentUser, currentUserProfile } = useContext(UserContext);
+  const { currentUser, currentUserProfile, defaultImageURL } =
+    useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -94,7 +92,7 @@ const Profile = () => {
       <h2 className="text-2xl font-semibold mb-10">Profile</h2>
       <ProfileImageUpload
         imagePreview={imagePreview}
-        imageURL={currentUserProfile?.imageURL || defaultImageUrl}
+        imageURL={currentUserProfile?.imageURL || defaultImageURL}
         onChange={handleImageChange}
       />
       <form className="my-8 space-y-6" onSubmit={handleFormSubmit}>

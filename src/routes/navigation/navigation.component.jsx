@@ -3,7 +3,6 @@ import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/user.context";
 import Footer from "../../components/footer/footer.component";
 import ProfileDropdown from "../../components/profile-dropdown/profile-dropdown.component";
-import userDp from "../../assets/userdp.png";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
@@ -11,7 +10,8 @@ import { FaCircleQuestion } from "react-icons/fa6";
 import { ClipLoader } from "react-spinners";
 
 const Navigation = () => {
-  const { currentUser, loading } = useContext(UserContext);
+  const { currentUser, currentUserProfile, defaultImageURL, loading } =
+    useContext(UserContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -88,9 +88,9 @@ const Navigation = () => {
                 onClick={toggleDropdown}
               >
                 <img
-                  src={userDp}
+                  src={currentUserProfile?.imageURL || defaultImageURL}
                   alt="display-picture"
-                  className="h-10 w-10 bg-black rounded-full"
+                  className="h-10 w-10 bg-black rounded-full object-cover"
                 />
                 <IoIosArrowDown className="text-xl text-gray-500" />
               </div>

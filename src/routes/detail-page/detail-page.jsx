@@ -9,15 +9,13 @@ import {
 import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
 import ColorFulDiv from "../../components/colorful-div/colorful-div.component";
 import Spinner from "../../components/spinner/spinner.component";
-import userdp from "../../assets/userdp.png";
 import { errorToast } from "../../utils/toast/toast.utils";
-import { FaGithub } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
 const DetailPage = () => {
-  const { currentUserProfile } = useContext(UserContext);
+  const { currentUserProfile, defaultImageURL } = useContext(UserContext);
   const [comment, setComment] = useState("");
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -54,6 +52,7 @@ const DetailPage = () => {
     const commentData = {
       text: comment,
       user: currentUserProfile.displayName, // or currentUser.uid
+      userProfileImage: currentUserProfile.imageURL,
     };
 
     mutation.mutate({ postId: id, comment: commentData });
@@ -76,7 +75,7 @@ const DetailPage = () => {
   if (!post)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>No post found</p>
+        <p className="text-white">Post not found</p>
       </div>
     );
 
@@ -110,14 +109,18 @@ const DetailPage = () => {
                 {postDetails?.comments?.length == 0 && (
                   <p className="text-sm text-text">no comments found.</p>
                 )}
-                {postDetails?.comments.map(({ text, user, createdAt }, idx) => (
-                  <CommentCard
-                    key={idx}
-                    text={text}
-                    user={user}
-                    createdAt={createdAt}
-                  />
-                ))}
+                {postDetails?.comments?.map(
+                  ({ text, user, userProfileImage, createdAt }, idx) => (
+                    <CommentCard
+                      key={idx}
+                      text={text}
+                      user={user}
+                      createdAt={createdAt}
+                      defaultImageURL={defaultImageURL}
+                      userProfileImage={userProfileImage}
+                    />
+                  )
+                )}
               </div>
               <div className="w-full mt-5 relative flex items-center">
                 <input
@@ -132,6 +135,7 @@ const DetailPage = () => {
                   className={`absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600 ${
                     mutation.isPending && "bg-text"
                   }`}
+                  disabled={mutation.isPending}
                   onClick={handleSubmit}
                 >
                   <IoIosSend className="text-xl" />
@@ -146,7 +150,7 @@ const DetailPage = () => {
             <div className="flex flex-1 flex-col items-center border-b border-text">
               <div className="flex flex-col items-center">
                 <img
-                  src={userdp}
+                  src={authorDetails?.imageURL || defaultImageURL}
                   alt="userdp"
                   className="bg-black rounded-full object-cover w-[10rem] h-[10rem]"
                 />
@@ -189,13 +193,19 @@ const DetailPage = () => {
 
 export default DetailPage;
 
-const CommentCard = ({ text, user, createdAt }) => {
+const CommentCard = ({
+  text,
+  user,
+  userProfileImage,
+  createdAt,
+  defaultImageURL,
+}) => {
   return (
     <div className="flex items-start gap-4">
       <img
-        src={userdp}
+        src={userProfileImage || defaultImageURL}
         alt="userdp"
-        className="h-10 w-10 rounded-full bg-black"
+        className="h-10 w-10 object-cover rounded-full bg-black"
       />
       <div className="text-sm">
         <p className="font-medium">{user}</p>
