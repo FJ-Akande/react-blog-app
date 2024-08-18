@@ -158,7 +158,10 @@ const DetailPage = () => {
                   <h3 className="font-semibold text-xl">
                     {authorDetails.displayName}
                   </h3>
-                  <p className="text-sm text-text py-5">{authorDetails.bio}</p>
+                  <p className="text-sm text-text py-5">
+                    {authorDetails.bio ||
+                      "Enthusiastic about all things tech. Always growing and evolving."}
+                  </p>
                 </div>
               </div>
 

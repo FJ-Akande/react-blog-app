@@ -108,13 +108,17 @@ export const updateUserProfile = async ({ userId, profileData, imageFile }) => {
     }
   }
 
-  // Update profile with image URL and other details
+  const updateData = {
+    ...profileData,
+    lastUpdated: serverTimestamp(),
+  };
+
+  if (imageURL) {
+    updateData.imageURL = imageURL;
+  }
+
   try {
-    await updateDoc(userDocRef, {
-      ...profileData,
-      imageURL, // Use the new or existing image URL
-      lastUpdated: serverTimestamp(),
-    });
+    await updateDoc(userDocRef, updateData);
   } catch (error) {
     console.error("Error updating user profile", error.message);
     throw error;

@@ -28,9 +28,11 @@ const Profile = () => {
   useEffect(() => {
     if (currentUserProfile) {
       setFormFields({
-        displayName: currentUserProfile.displayName || "",
-        bio: currentUserProfile.bio || "",
-        techStacks: currentUserProfile.techStacks || "",
+        displayName: currentUserProfile.displayName || "Anonymous",
+        bio:
+          currentUserProfile.bio ||
+          "Enthusiastic about all things tech. Always growing and evolving.",
+        techStacks: currentUserProfile.techStacks || "Typescript, NodeJS",
         discord: currentUserProfile.discord || "",
         twitter: currentUserProfile.twitter || "",
       });

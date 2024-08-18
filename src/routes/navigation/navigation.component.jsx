@@ -89,7 +89,7 @@ const Navigation = () => {
               >
                 {currentUserProfile?.imageURL ? (
                   <img
-                    src={currentUserProfile?.imageURL}
+                    src={currentUserProfile?.imageURL || defaultImageURL}
                     alt="display-picture"
                     className="h-10 w-10 rounded-full object-cover"
                   />
