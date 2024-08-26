@@ -45,7 +45,7 @@ const DetailPage = () => {
     if (!comment) return;
 
     if (!currentUserProfile || !currentUserProfile.displayName) {
-      errorToast("You must be signed in to post a comment");
+      errorToast("You must be signed in to add a comment");
       return;
     }
 

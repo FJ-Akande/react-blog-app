@@ -58,8 +58,6 @@ const Navigation = () => {
     },
   ];
 
-  //QuickQuestion
-
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed w-full top-0 z-50 bg-primary border-b border-gray-700 text-white">
@@ -81,23 +79,21 @@ const Navigation = () => {
               </NavLink>
             ))}
           </ul>
-          {currentUser ? (
+          {loading ? (
+            <div className="h-10 flex items-center justify-center">
+              <ClipLoader size={22} color={"#6b7280"} />
+            </div>
+          ) : currentUser ? (
             <div className="profile-dropdown relative">
               <div
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={toggleDropdown}
               >
-                {currentUserProfile?.imageURL ? (
-                  <img
-                    src={currentUserProfile?.imageURL || defaultImageURL}
-                    alt="display-picture"
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="h-10 w-10 bg-[#1f2937] rounded-full flex items-center justify-center">
-                    <ClipLoader size={20} color={"#6b7280"} />
-                  </div>
-                )}
+                <img
+                  src={currentUserProfile?.imageURL || defaultImageURL}
+                  alt="display-picture"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
                 <IoIosArrowDown className="text-xl text-gray-500" />
               </div>
               <ProfileDropdown
@@ -105,10 +101,6 @@ const Navigation = () => {
                 isVisible={dropdownVisible}
                 toggleDropdown={toggleDropdown}
               />
-            </div>
-          ) : loading ? (
-            <div className="h-10 flex items-center justify-center">
-              <ClipLoader size={22} color={"#6b7280"} />
             </div>
           ) : (
             <button
