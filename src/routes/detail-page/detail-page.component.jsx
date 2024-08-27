@@ -6,7 +6,11 @@ import {
   addCommentToPost,
   fetchPostDetails,
 } from "../../utils/firebase/firebase.utils";
-import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
+import {
+  dateFormatter,
+  formatRelativeTime,
+} from "../../utils/date-utils/date-utils";
+import useFetchCommentsProfiles from "../../hooks/fetch-comments-profiles.hook";
 import ColorFulDiv from "../../components/colorful-div/colorful-div.component";
 import Spinner from "../../components/spinner/spinner.component";
 import { errorToast } from "../../utils/toast/toast.utils";
@@ -15,15 +19,16 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
 const DetailPage = () => {
-  const { currentUserProfile, defaultImageURL } = useContext(UserContext);
+  const { currentUser, currentUserProfile, defaultImageURL } =
+    useContext(UserContext);
   const [comment, setComment] = useState("");
   const { id } = useParams();
   const queryClient = useQueryClient();
 
   const {
     data: post,
-    isLoading,
-    isError,
+    isLoading: postLoading,
+    isError: postError,
   } = useQuery({
     queryKey: ["post", id],
     queryFn: () => fetchPostDetails(id),
@@ -41,31 +46,35 @@ const DetailPage = () => {
     },
   });
 
+  // Ensure the hook is always called, even if `postDetails?.comments` is undefined
+  const { profilesMap, loading, error } = useFetchCommentsProfiles(
+    post?.postDetails?.comments || []
+  );
+
   const handleSubmit = () => {
     if (!comment) return;
 
-    if (!currentUserProfile || !currentUserProfile.displayName) {
+    if (!currentUser.uid) {
       errorToast("You must be signed in to add a comment");
       return;
     }
 
     const commentData = {
       text: comment,
-      user: currentUserProfile.displayName, // or currentUser.uid
-      userProfileImage: currentUserProfile.imageURL,
+      user: currentUser.uid,
     };
 
     mutation.mutate({ postId: id, comment: commentData });
   };
 
-  if (isLoading)
+  if (postLoading)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Spinner />
       </div>
     );
 
-  if (isError)
+  if (postError)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-red-500">Error loading post</p>
@@ -106,20 +115,25 @@ const DetailPage = () => {
             <div className="mt-12 mb-4 border-t border-text pt-4">
               <div className="space-y-6 max-h-[220px] overflow-y-scroll custom-scrollbar pb-5">
                 <h3 className="font-medium">Comments</h3>
-                {postDetails?.comments?.length == 0 && (
+                {postDetails?.comments?.length === 0 && (
                   <p className="text-sm text-text">no comments found.</p>
                 )}
                 {postDetails?.comments?.map(
-                  ({ text, user, userProfileImage, createdAt }, idx) => (
-                    <CommentCard
-                      key={idx}
-                      text={text}
-                      user={user}
-                      createdAt={createdAt}
-                      defaultImageURL={defaultImageURL}
-                      userProfileImage={userProfileImage}
-                    />
-                  )
+                  ({ text, user, createdAt }, idx) => {
+                    const userProfile = profilesMap?.[user]; // Access the user profile based on userId
+
+                    return (
+                      <CommentCard
+                        key={idx}
+                        text={text}
+                        user={userProfile?.displayName || "Anonymous"}
+                        userProfileImage={
+                          userProfile?.imageURL || defaultImageURL
+                        }
+                        createdAt={createdAt}
+                      />
+                    );
+                  }
                 )}
               </div>
               <div className="w-full mt-5 relative flex items-center">
@@ -196,17 +210,11 @@ const DetailPage = () => {
 
 export default DetailPage;
 
-const CommentCard = ({
-  text,
-  user,
-  userProfileImage,
-  createdAt,
-  defaultImageURL,
-}) => {
+const CommentCard = ({ text, user, userProfileImage, createdAt }) => {
   return (
     <div className="flex items-start gap-4">
       <img
-        src={userProfileImage || defaultImageURL}
+        src={userProfileImage}
         alt="userdp"
         className="h-10 w-10 object-cover rounded-full bg-black"
       />

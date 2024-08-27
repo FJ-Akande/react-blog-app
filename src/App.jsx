@@ -3,13 +3,13 @@ import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
 import SignIn from "./routes/sign-in/sign-in.component";
 import SignUp from "./routes/sign-up/sign-up.component";
-import DetailPage from "./routes/detail-page/detail-page";
+import DetailPage from "./routes/detail-page/detail-page.component";
 import CreateBlog from "./routes/create-blog/create-blog.component";
 import News from "./routes/news/news.component";
 import HowItWorks from "./routes/how-it-works/how-it-works.component";
 import Profile from "./routes/profile/profile.component";
 import MyPosts from "./routes/my-posts/my-posts.component";
-import PrivateRoute from "./utils/private-route/private-route.utils";
+import PrivateRoute from "./utils/private-route/private-route.util";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

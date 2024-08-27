@@ -3,7 +3,10 @@ import { useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/user.context";
 import { deletePost } from "../../utils/firebase/firebase.utils";
-import { dateFormatter, formatRelativeTime } from "../../utils/helpers/helpers";
+import {
+  dateFormatter,
+  formatRelativeTime,
+} from "../../utils/date-utils/date-utils";
 import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import ColorFulDiv from "../colorful-div/colorful-div.component";
 import { MdDelete } from "react-icons/md";
