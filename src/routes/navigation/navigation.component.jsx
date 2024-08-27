@@ -10,8 +10,7 @@ import { FaCircleQuestion } from "react-icons/fa6";
 import { ClipLoader } from "react-spinners";
 
 const Navigation = () => {
-  const { currentUser, currentUserProfile, defaultImageURL, loading } =
-    useContext(UserContext);
+  const { currentUser, currentUserProfile, loading } = useContext(UserContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -90,8 +89,7 @@ const Navigation = () => {
                 onClick={toggleDropdown}
               >
                 <img
-                  src={currentUserProfile?.imageURL || defaultImageURL}
-                  alt="display-picture"
+                  src={currentUserProfile?.imageURL}
                   className="h-10 w-10 rounded-full object-cover"
                 />
                 <IoIosArrowDown className="text-xl text-gray-500" />

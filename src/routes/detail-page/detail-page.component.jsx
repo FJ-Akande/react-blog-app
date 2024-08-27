@@ -19,7 +19,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
 const DetailPage = () => {
-  const { currentUser, defaultImageURL } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [comment, setComment] = useState("");
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -126,9 +126,7 @@ const DetailPage = () => {
                         key={idx}
                         text={text}
                         user={userProfile?.displayName}
-                        userProfileImage={
-                          userProfile?.imageURL || defaultImageURL
-                        }
+                        userProfileImage={userProfile?.imageURL}
                         createdAt={createdAt}
                       />
                     );
@@ -163,7 +161,7 @@ const DetailPage = () => {
             <div className="flex flex-1 flex-col items-center border-b border-text">
               <div className="flex flex-col items-center">
                 <img
-                  src={authorDetails?.imageURL || defaultImageURL}
+                  src={authorDetails?.imageURL}
                   alt="userdp"
                   className="bg-black rounded-full object-cover w-[10rem] h-[10rem]"
                 />

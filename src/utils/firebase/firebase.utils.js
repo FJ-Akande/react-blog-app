@@ -200,8 +200,8 @@ export const fetchUserPosts = async (userId) => {
   const postsRef = collection(db, "posts");
   const q = query(
     postsRef,
-    where("authorId", "==", userId)
-    // orderBy("createdAt", "desc") // come back to this!
+    where("authorId", "==", userId),
+    orderBy("createdAt", "desc")
   );
   const querySnapshot = await getDocs(q);
 

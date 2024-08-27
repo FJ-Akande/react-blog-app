@@ -8,16 +8,18 @@ import { errorToast } from "../../utils/toast/toast.utils";
 import Input from "../../components/input/input.component";
 import { ClipLoader } from "react-spinners";
 
+const defaultFormFields = {
+  displayName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const imageURL =
+  "https://firebasestorage.googleapis.com/v0/b/cannabud-ny.appspot.com/o/profile-img.jpg?alt=media&token=d362e350-75b3-4d98-b526-6a9c85e4b173";
+
 const SignUp = () => {
   const navigate = useNavigate();
-
-  const defaultFormFields = {
-    displayName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  };
-
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [loading, setLoading] = useState(false);
 
@@ -48,7 +50,7 @@ const SignUp = () => {
         email,
         password
       );
-      await createUserDocumentFromAuth(user, { displayName });
+      await createUserDocumentFromAuth(user, { displayName, imageURL });
       setLoading(false);
       resetFormFields();
       navigate("/");

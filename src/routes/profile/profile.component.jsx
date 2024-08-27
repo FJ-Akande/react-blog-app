@@ -17,8 +17,7 @@ const defaultFormFields = {
 };
 
 const Profile = () => {
-  const { currentUser, currentUserProfile, defaultImageURL } =
-    useContext(UserContext);
+  const { currentUser, currentUserProfile } = useContext(UserContext);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [isLoading, setIsLoading] = useState(true);
   const [image, setImage] = useState(null);
@@ -98,7 +97,7 @@ const Profile = () => {
       {!isLoading ? (
         <ProfileImageUpload
           imagePreview={imagePreview}
-          imageURL={currentUserProfile?.imageURL || defaultImageURL}
+          imageURL={currentUserProfile?.imageURL}
           onChange={handleImageChange}
         />
       ) : (
