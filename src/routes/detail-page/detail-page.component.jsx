@@ -19,8 +19,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { IoIosSend } from "react-icons/io";
 
 const DetailPage = () => {
-  const { currentUser, currentUserProfile, defaultImageURL } =
-    useContext(UserContext);
+  const { currentUser, defaultImageURL } = useContext(UserContext);
   const [comment, setComment] = useState("");
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -54,7 +53,7 @@ const DetailPage = () => {
   const handleSubmit = () => {
     if (!comment) return;
 
-    if (!currentUser.uid) {
+    if (!currentUser?.uid) {
       errorToast("You must be signed in to add a comment");
       return;
     }
@@ -126,7 +125,7 @@ const DetailPage = () => {
                       <CommentCard
                         key={idx}
                         text={text}
-                        user={userProfile?.displayName || "Anonymous"}
+                        user={userProfile?.displayName}
                         userProfileImage={
                           userProfile?.imageURL || defaultImageURL
                         }
