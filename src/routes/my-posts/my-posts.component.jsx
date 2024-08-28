@@ -55,13 +55,11 @@ const MyPosts = () => {
 
   return (
     <div className="py-24 max-w-[60%] mx-auto text-white">
-      {/* {isOpen && ( */}
       <Modal
         isOpen={isOpen}
         onConfirm={handleDeletePost}
         onClose={closeModal}
       />
-      {/* )} */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">My Posts</h1>
         <button

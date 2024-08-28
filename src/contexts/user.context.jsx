@@ -14,17 +14,29 @@ export const UserContext = createContext({
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [profileReady, setProfileReady] = useState(false);
 
-  const { data: currentUserProfile } = useQuery({
+  const { data: currentUserProfile, refetch: refetchUserProfile } = useQuery({
     queryKey: ["userProfile", currentUser?.uid],
     queryFn: () => getUserProfile(currentUser.uid),
-    enabled: !!currentUser,
+    enabled: !!currentUser && profileReady,
+    retry: true, // Retry fetching in case it fails initially
+    retryDelay: 1000, // Delay between retries
   });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
       setCurrentUser(user);
       setLoading(false);
+      if (user) {
+        const profile = await getUserProfile(user.uid);
+        if (profile) {
+          setProfileReady(true);
+        } else {
+          // Wait until profile is created in Firestore before attempting to fetch
+          setTimeout(() => refetchUserProfile(), 1000); // Retry fetching after 1 second
+        }
+      }
     });
 
     return () => unsubscribe();
