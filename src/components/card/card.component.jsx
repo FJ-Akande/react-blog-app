@@ -1,8 +1,8 @@
 import { useContext, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/user.context";
-import { deletePost } from "../../utils/firebase/firebase.utils";
+// import { deletePost } from "../../utils/firebase/firebase.utils";
 import {
   dateFormatter,
   formatRelativeTime,
@@ -11,49 +11,31 @@ import { errorToast, successToast } from "../../utils/toast/toast.utils";
 import ColorFulDiv from "../colorful-div/colorful-div.component";
 import { MdDelete } from "react-icons/md";
 
-const Card = ({ post, ...otherProps }) => {
+const Card = ({ post, handleDeletePost, ...otherProps }) => {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   if (!post) return <div>Loading...</div>;
 
-  const {
-    id,
-    authorId,
-    comments,
-    createdAt,
-    description,
-    levelRequired,
-    skills,
-    title,
-    updatedAt,
-  } = post;
+  const { id, authorId, createdAt, description, levelRequired, skills, title } =
+    post;
 
   const showDelete = useMemo(
     () => currentUser?.uid === authorId && location.pathname === "/my-posts",
     [currentUser, authorId, location.pathname]
   );
 
-  const mutation = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries("posts");
-      successToast("Post deleted");
-    },
-    onError: (error) => {
-      errorToast("Error deleting post:", error.message);
-    },
-  });
-
-  const handleDeletePost = async () => {
-    const confirmation = window.confirm(
-      "Are you sure you want to delete this post?"
-    );
-    if (confirmation) {
-      mutation.mutate(id);
-    }
-  };
+  // const mutation = useMutation({
+  //   mutationFn: deletePost,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("posts");
+  //     successToast("Post deleted");
+  //   },
+  //   onError: (error) => {
+  //     errorToast("Error deleting post:", error.message);
+  //   },
+  // });
 
   return (
     <div
@@ -65,10 +47,7 @@ const Card = ({ post, ...otherProps }) => {
           <h2 className="text-xl font-medium">{title}</h2>
           <button
             className="flex items-center justify-center bg-secondary rounded-full p-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeletePost(id);
-            }}
+            onClick={handleDeletePost}
           >
             <MdDelete className="text-red-400 text-lg" />
           </button>
