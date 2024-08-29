@@ -28,10 +28,8 @@ const Profile = () => {
     if (currentUserProfile) {
       setFormFields({
         displayName: currentUserProfile.displayName || "Anonymous",
-        bio:
-          currentUserProfile.bio ||
-          "Enthusiastic about all things tech. Always growing and evolving.",
-        techStacks: currentUserProfile.techStacks || "Typescript, NodeJS",
+        bio: currentUserProfile.bio || "I have not written anything in my bio",
+        techStacks: currentUserProfile.techStacks || "",
         discord: currentUserProfile.discord || "",
         twitter: currentUserProfile.twitter || "",
       });
@@ -109,7 +107,7 @@ const Profile = () => {
         <Input
           label="Name"
           type="text"
-          placeholder="Dean DeaconCo"
+          placeholder="Anonymous"
           name="displayName"
           value={formFields.displayName}
           onChange={handleChange}
@@ -117,7 +115,7 @@ const Profile = () => {
         <Input
           label="Bio"
           type="textarea"
-          placeholder="Frontend Dev."
+          placeholder="Frontend Developer. Enthusiastic about all things tech. Always growing and evolving."
           name="bio"
           value={formFields.bio}
           onChange={handleChange}
