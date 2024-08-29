@@ -13,6 +13,7 @@ import {
 import useFetchCommentsProfiles from "../../hooks/fetch-comments-profiles.hook";
 import ColorFulDiv from "../../components/colorful-div/colorful-div.component";
 import Spinner from "../../components/spinner/spinner.component";
+import Modal from "../../components/modal/modal.component";
 import { errorToast } from "../../utils/toast/toast.utils";
 import { FaDiscord } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -21,6 +22,7 @@ import { IoIosSend } from "react-icons/io";
 const DetailPage = () => {
   const { currentUser } = useContext(UserContext);
   const [comment, setComment] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
   const queryClient = useQueryClient();
 
@@ -49,6 +51,10 @@ const DetailPage = () => {
   const { profilesMap, loading, error } = useFetchCommentsProfiles(
     post?.postDetails?.comments || []
   );
+
+  const openModal = () => setIsOpen(true);
+
+  const closeModal = () => setIsOpen(false);
 
   const handleSubmit = () => {
     if (!comment) return;
@@ -91,6 +97,12 @@ const DetailPage = () => {
 
   return (
     <div className="bg-secondary text-white min-h-screen py-24">
+      <Modal
+        modalType={"discord"}
+        isOpen={isOpen}
+        onClose={closeModal}
+        discordName={authorDetails.discord}
+      />
       <div className="max-w-[80%] mx-auto">
         <h1 className="font-semibold text-2xl">Project Details</h1>
         <div className="bg-primary max-w-[960px] mx-auto my-8 rounded-xl flex overflow-hidden">
@@ -190,7 +202,10 @@ const DetailPage = () => {
                     />
                   )}
                   {authorDetails.discord && (
-                    <FaDiscord className="text-2xl cursor-pointer" />
+                    <FaDiscord
+                      className="text-2xl cursor-pointer"
+                      onClick={openModal}
+                    />
                   )}
                 </div>
               </div>
