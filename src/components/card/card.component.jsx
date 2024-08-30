@@ -38,21 +38,21 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
           </button>
         </div>
       ) : (
-        <h2 className="text-xl font-medium">{title}</h2>
+        <h2 className="text-lg md:text-xl font-medium">{title}</h2>
       )}
-      <div className="text-sm space-y-2">
-        <p className="font-medium">
+      <div className="space-y-4 md:space-y-2">
+        <p className="font-medium text-xs md:text-sm">
           {description?.split(" ").length > 25
             ? `${description?.split(" ").slice(0, 25).join(" ")}...`
             : description}
         </p>
-        <p>
+        <p className="text-sm">
           Level Required - <span className="font-bold">{levelRequired}</span> -{" "}
-          {formatRelativeTime(createdAt) ?? "Posted 3 months ago"}
+          {formatRelativeTime(createdAt)}
         </p>
       </div>
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center flex-wrap gap-2">
           {skills.map((skill, index) => (
             <ColorFulDiv instance={index + 1} key={index}>
               {skill}

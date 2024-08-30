@@ -169,6 +169,11 @@ const CreateBlog = () => {
       return;
     }
 
+    if (formFields.skills.length > 3) {
+      errorToast("Select three skills at most");
+      return;
+    }
+
     const post = {
       ...formFields,
       authorId: currentUser.uid,
