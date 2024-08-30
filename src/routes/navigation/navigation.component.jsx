@@ -64,7 +64,7 @@ const Navigation = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed w-full top-0 z-50 bg-primary border-b border-gray-700 text-white">
-        <div className="flex items-center justify-between max-w-[92%] md:max-w-[80%] mx-auto py-3">
+        <div className="flex items-center justify-between max-w-[92%] md:max-w-[86%] xl:max-w-[80%] mx-auto py-3">
           <div className="flex items-center gap-2">
             <IoMdMenu
               className="text-3xl md:hidden block cursor-pointer"
@@ -125,7 +125,7 @@ const Navigation = () => {
 
           {/* Mobile Navigation Dropdown */}
           {mobileMenuVisible && (
-            <ul className="md:hidden absolute top-full left-0 w-full bg-primary border-t border-gray-700">
+            <ul className="md:hidden absolute top-full left-0 w-full bg-primary border-t border-gray-700 rounded-b-xl">
               {navLinks.map(({ id, name, link, icon }) => (
                 <NavLink
                   to={link}
@@ -133,11 +133,11 @@ const Navigation = () => {
                   className={({ isActive }) =>
                     `${
                       isActive ? "text-white" : "text-gray-500"
-                    } flex items-center gap-2 p-4 border-b border-gray-700`
+                    } flex items-center gap-2 py-3 px-4 border-b border-gray-700 last:border-b-0`
                   }
                   onClick={toggleMobileMenu}
                 >
-                  <li className="flex items-center gap-2 font-medium">
+                  <li className="flex items-center gap-3 font-semibold">
                     {icon}
                     {name}
                   </li>

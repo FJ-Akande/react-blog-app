@@ -19,8 +19,8 @@ const Home = () => {
   } = useContext(PostsContext);
 
   return (
-    <div className="min-h-screen text-white py-24">
-      <div className="max-w-3xl mx-auto my-10">
+    <div className="min-h-screen text-white py-16 lg:py-24">
+      <div className="max-w-[92%] md:max-w-[86%] lg:max-w-3xl mx-auto my-10">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Projects</h1>
           <button
