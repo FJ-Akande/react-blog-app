@@ -9,7 +9,7 @@ const ProfileDropdown = forwardRef(({ isVisible, toggleDropdown }, ref) => {
   return (
     <div
       ref={ref}
-      className={`absolute right-0 mt-3 w-[260px] bg-primary border border-gray-700 rounded-xl text-white font-medium overflow-hidden ${
+      className={`absolute right-0 md:mt-3 top-full w-full md:w-[260px] bg-primary border border-gray-700 rounded-b-xl md:rounded-xl text-white font-medium overflow-hidden ${
         isVisible ? "block" : "hidden"
       }`}
     >

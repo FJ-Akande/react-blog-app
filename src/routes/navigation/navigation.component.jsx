@@ -7,11 +7,13 @@ import { IoIosArrowDown } from "react-icons/io";
 import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { BsGlobeEuropeAfrica } from "react-icons/bs";
 import { FaCircleQuestion } from "react-icons/fa6";
+import { IoMdMenu } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
 
 const Navigation = () => {
   const { currentUser, currentUserProfile, loading } = useContext(UserContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -28,6 +30,8 @@ const Navigation = () => {
       setDropdownVisible(false);
     }
   };
+
+  const toggleMobileMenu = () => setMobileMenuVisible(!mobileMenuVisible);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -60,11 +64,19 @@ const Navigation = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="fixed w-full top-0 z-50 bg-primary border-b border-gray-700 text-white">
-        <div className="flex items-center justify-between max-w-[80%] mx-auto py-3">
-          <NavLink to="/">
-            <h1 className="font-bold text-lg">QuickQuestion</h1>
-          </NavLink>
-          <ul className="flex gap-10 text-gray-500">
+        <div className="flex items-center justify-between max-w-[92%] md:max-w-[80%] mx-auto py-3">
+          <div className="flex items-center gap-2">
+            <IoMdMenu
+              className="text-3xl md:hidden block cursor-pointer"
+              onClick={toggleMobileMenu}
+            />
+
+            <NavLink to="/">
+              <h1 className="font-bold text-lg">QuickQuestion</h1>
+            </NavLink>
+          </div>
+
+          <ul className="hidden md:flex gap-10 text-gray-500">
             {navLinks.map(({ id, name, link, icon }) => (
               <NavLink
                 to={link}
@@ -78,12 +90,13 @@ const Navigation = () => {
               </NavLink>
             ))}
           </ul>
+
           {loading ? (
             <div className="h-10 flex items-center justify-center">
               <ClipLoader size={22} color={"#6b7280"} />
             </div>
           ) : currentUser ? (
-            <div className="profile-dropdown relative">
+            <div className="profile-dropdown md:relative">
               <div
                 className="flex items-center gap-2 cursor-pointer"
                 onClick={toggleDropdown}
@@ -109,8 +122,32 @@ const Navigation = () => {
               Login
             </button>
           )}
+
+          {/* Mobile Navigation Dropdown */}
+          {mobileMenuVisible && (
+            <ul className="md:hidden absolute top-full left-0 w-full bg-primary border-t border-gray-700">
+              {navLinks.map(({ id, name, link, icon }) => (
+                <NavLink
+                  to={link}
+                  key={id}
+                  className={({ isActive }) =>
+                    `${
+                      isActive ? "text-white" : "text-gray-500"
+                    } flex items-center gap-2 p-4 border-b border-gray-700`
+                  }
+                  onClick={toggleMobileMenu}
+                >
+                  <li className="flex items-center gap-2 font-medium">
+                    {icon}
+                    {name}
+                  </li>
+                </NavLink>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
+
       <main className="bg-secondary flex-grow">
         <Outlet />
       </main>
