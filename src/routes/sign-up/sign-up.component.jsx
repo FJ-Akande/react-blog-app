@@ -73,8 +73,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-secondary min-h-screen flex justify-center items-center">
-      <div className="w-full max-w-md p-4 border border-gray-700 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+    <div className="bg-secondary min-h-screen flex justify-center items-center py-24 sm:py-0">
+      <div className="w-full mx-auto max-w-md p-4 border border-gray-700 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={handleFormSubmit}>
           <h5 className="text-xl font-medium text-white dark:text-white">
             Create account
@@ -97,24 +97,26 @@ const SignUp = () => {
             value={formFields.email}
             onChange={handleChange}
           />
-          <Input
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            name="password"
-            id="password"
-            value={formFields.password}
-            onChange={handleChange}
-          />
-          <Input
-            label="Confirm Password"
-            type="password"
-            placeholder="••••••••"
-            name="confirmPassword"
-            id="confirmPassword"
-            value={formFields.confirmPassword}
-            onChange={handleChange}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 gap-y-6">
+            <Input
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              name="password"
+              id="password"
+              value={formFields.password}
+              onChange={handleChange}
+            />
+            <Input
+              label="Confirm Password"
+              type="password"
+              placeholder="••••••••"
+              name="confirmPassword"
+              id="confirmPassword"
+              value={formFields.confirmPassword}
+              onChange={handleChange}
+            />
+          </div>
           <button
             type="submit"
             className="w-full text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
