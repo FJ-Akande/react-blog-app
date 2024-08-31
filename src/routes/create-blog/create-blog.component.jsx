@@ -184,7 +184,7 @@ const CreateBlog = () => {
 
   return (
     <div className="min-h-screen bg-secondary text-text py-24">
-      <div className="max-w-[80%] mx-auto">
+      <div className="max-w-[92%] md:max-w-[80%] mx-auto">
         <h1 className="font-semibold text-2xl text-white">Create blog</h1>
         <form className="my-10 space-y-10" onSubmit={handleFormSubmit}>
           <Input
@@ -205,7 +205,7 @@ const CreateBlog = () => {
           />
           <div>
             <p className="text-sm font-medium mb-3">I need help with: </p>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {selectOptions.map((option) => (
                 <SkillCard
                   option={option}
@@ -216,7 +216,7 @@ const CreateBlog = () => {
                 />
               ))}
               <div
-                className="bg-gray-800 rounded-xl text-text font-medium text-center text-sm flex flex-col items-center justify-center cursor-pointer"
+                className="bg-gray-800 rounded-xl text-text font-medium text-center text-sm flex flex-col items-center justify-center cursor-pointer py-4 md:py-0"
                 onClick={() =>
                   (window.location.href =
                     "mailto:fortunatusakande@gmail.com?subject=Hello&body=I would like to contact you regarding...")
@@ -229,7 +229,7 @@ const CreateBlog = () => {
           </div>
           <div>
             <p className="text-sm font-medium mb-3">Level required:</p>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {levelOptions.map((option) => (
                 <SkillCard
                   option={option}
