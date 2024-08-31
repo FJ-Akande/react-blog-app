@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
 import SignIn from "./routes/sign-in/sign-in.component";
@@ -10,6 +10,7 @@ import HowItWorks from "./routes/how-it-works/how-it-works.component";
 import Profile from "./routes/profile/profile.component";
 import MyPosts from "./routes/my-posts/my-posts.component";
 import PrivateRoute from "./utils/private-route/private-route.util";
+import PageNotFound from "./routes/page-not-found/page-not-found.component";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -50,7 +51,7 @@ const App = () => {
             }
           />
         </Route>
-        {/* <Route path="*" element={<Navigate to="/sign-in" replace />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

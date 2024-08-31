@@ -125,7 +125,7 @@ const Navigation = () => {
 
           {/* Mobile Navigation Dropdown */}
           {mobileMenuVisible && (
-            <ul className="md:hidden absolute top-full left-0 w-full bg-primary border-t border-gray-700 rounded-b-xl">
+            <ul className="md:hidden absolute top-full left-0 w-full bg-primary border-t border-b border-gray-700 rounded-b-xl">
               {navLinks.map(({ id, name, link, icon }) => (
                 <NavLink
                   to={link}

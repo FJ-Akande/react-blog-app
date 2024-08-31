@@ -174,6 +174,11 @@ const CreateBlog = () => {
       return;
     }
 
+    if (formFields.description.length < 100) {
+      errorToast("Description is short, must be more than 100 characters");
+      return;
+    }
+
     const post = {
       ...formFields,
       authorId: currentUser.uid,
