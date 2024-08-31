@@ -90,7 +90,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-[86%] md:max-w-[80%] mx-auto py-24 text-white">
+    <div className="max-w-[92%] md:max-w-[80%] mx-auto py-24 text-white">
       <h2 className="text-2xl font-semibold mb-10">Profile</h2>
       {!isLoading ? (
         <ProfileImageUpload
