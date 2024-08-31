@@ -103,10 +103,12 @@ const DetailPage = () => {
         onClose={closeModal}
         discordName={authorDetails.discord}
       />
-      <div className="max-w-[80%] mx-auto">
-        <h1 className="font-semibold text-2xl">Project Details</h1>
-        <div className="bg-primary max-w-[960px] mx-auto my-8 rounded-xl flex overflow-hidden">
-          <div className="w-[70%] p-8 flex flex-col justify-between">
+      <div className="max-w-[92%] md:max-w-[80%] mx-auto">
+        <h1 className="font-semibold text-2xl hidden md:block">
+          Project Details
+        </h1>
+        <div className="bg-primary max-w-[960px] mx-auto md:my-8 rounded-xl md:flex overflow-hidden">
+          <div className="md:w-[60%] xl:w-[70%] p-4 md:p-8 flex flex-col justify-between">
             <div>
               <h2 className="text-2xl font-medium">{postDetails.title}</h2>
               <p className="mt-5 mb-10 text-text">{postDetails.description}</p>
@@ -167,8 +169,8 @@ const DetailPage = () => {
               Posted on {dateFormatter(postDetails.createdAt)}
             </p>
           </div>
-          <div className="bg-[#1B232E] w-[30%] py-8 flex flex-col items-center px-10">
-            <div className="flex flex-1 flex-col items-center border-b border-text">
+          <div className="bg-[#1B232E] md:w-[40%] xl:w-[30%] py-8 flex flex-col items-center px-10">
+            <div className="flex flex-1 flex-col items-center border-b border-text pb-10 md:pb-0">
               <div className="flex flex-col items-center">
                 <img
                   src={authorDetails?.imageURL}
@@ -226,7 +228,7 @@ const CommentCard = ({ text, user, userProfileImage, createdAt }) => {
       <img
         src={userProfileImage}
         alt="userdp"
-        className="h-10 w-10 object-cover rounded-full bg-black"
+        className="h-10 w-10 object-cover rounded-full"
       />
       <div className="text-sm">
         <p className="font-medium">{user}</p>
