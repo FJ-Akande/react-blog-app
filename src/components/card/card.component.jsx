@@ -29,7 +29,7 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
     >
       {showDelete ? (
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-medium">{title}</h2>
+          <h2 className="text-lg md:text-xl font-medium">{title}</h2>
           <button
             className="flex items-center justify-center bg-secondary rounded-full p-1"
             onClick={handleDeletePost}
@@ -40,7 +40,7 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
       ) : (
         <h2 className="text-lg md:text-xl font-medium">{title}</h2>
       )}
-      <div className="space-y-4 md:space-y-2">
+      <div className="space-y-2">
         <p className="font-medium text-xs md:text-sm">
           {description?.split(" ").length > 25
             ? `${description?.split(" ").slice(0, 25).join(" ")}...`
@@ -51,7 +51,7 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
           {formatRelativeTime(createdAt)}
         </p>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-y-4">
         <div className="flex items-center flex-wrap gap-2">
           {skills.map((skill, index) => (
             <ColorFulDiv instance={index + 1} key={index}>

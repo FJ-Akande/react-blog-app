@@ -27,10 +27,8 @@ const Home = () => {
             className="bg-primary p-3 rounded-lg flex items-center gap-2 font-medium"
             onClick={() => navigate("/create-blog")}
           >
-            <span>
-              <IoMdAdd className="text-2xl" />
-            </span>
-            Create Project
+            <IoMdAdd className="text-2xl" />
+            <span className="hidden md:block">Create Project</span>
           </button>
         </div>
         <div className="my-10 space-y-6">
