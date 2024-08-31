@@ -54,9 +54,7 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
       <div className="flex flex-wrap justify-between items-center gap-y-4">
         <div className="flex items-center flex-wrap gap-2">
           {skills.map((skill, index) => (
-            <ColorFulDiv instance={index + 1} key={index}>
-              {skill}
-            </ColorFulDiv>
+            <ColorFulDiv key={index}>{skill}</ColorFulDiv>
           ))}
         </div>
         <p className="text-xs text-gray-400">{dateFormatter(createdAt)}</p>

@@ -112,9 +112,7 @@ const DetailPage = () => {
               <p className="mt-5 mb-10 text-text">{postDetails.description}</p>
               <div className="flex items-center gap-2">
                 {postDetails?.skills?.map((skill, index) => (
-                  <ColorFulDiv instance={index + 1} key={index}>
-                    {skill}
-                  </ColorFulDiv>
+                  <ColorFulDiv key={index}>{skill}</ColorFulDiv>
                 ))}
               </div>
               <h3 className="text-lg font-medium mt-8">Skills and Expertise</h3>
