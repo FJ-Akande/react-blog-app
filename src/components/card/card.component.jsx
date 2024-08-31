@@ -28,7 +28,7 @@ const Card = ({ post, handleDeletePost, ...otherProps }) => {
       {...otherProps}
     >
       {showDelete ? (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-y-2">
           <h2 className="text-lg md:text-xl font-medium">{title}</h2>
           <button
             className="flex items-center justify-center bg-secondary rounded-full p-1"

@@ -8,19 +8,19 @@ const Footer = () => {
       <div className="max-w-[80%] mx-auto md:flex md:items-center text-center space-y-3 md:space-y-0">
         <div className="flex items-center justify-center gap-3">
           <MdEmail
-            className="text-2xl cursor-pointer"
+            className="text-xl md:text-2xl cursor-pointer"
             onClick={() =>
               (window.location.href = "mailto:fortunatusakande@gmail.com")
             }
           />
           <FaXTwitter
-            className="text-2xl cursor-pointer"
+            className="text-xl md:text-2xl cursor-pointer"
             onClick={() =>
               window.open("https://twitter.com/niyitwts", "_blank")
             }
           />
           <FaGithub
-            className="text-2xl cursor-pointer"
+            className="text-xl md:text-2xl cursor-pointer"
             onClick={() =>
               window.open("https://github.com/FJ-Akande", "_blank")
             }

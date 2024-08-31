@@ -54,7 +54,7 @@ const MyPosts = () => {
   };
 
   return (
-    <div className="py-24 max-w-[60%] mx-auto text-white">
+    <div className="py-24 max-w-[92%] md:max-w-[80%] lg:max-w-[68%] xl:max-w-[60%] mx-auto text-white">
       <Modal
         isOpen={isOpen}
         onConfirm={handleDeletePost}
@@ -66,10 +66,8 @@ const MyPosts = () => {
           className="bg-primary p-3 rounded-lg flex items-center gap-2 font-medium"
           onClick={() => navigate("/create-blog")}
         >
-          <span>
-            <IoMdAdd className="text-2xl" />
-          </span>
-          Add new
+          <IoMdAdd className="text-2xl" />
+          <span className="hidden md:block">Add new</span>
         </button>
       </div>
       <div className="mt-10 space-y-5">
