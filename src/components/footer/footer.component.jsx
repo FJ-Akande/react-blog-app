@@ -22,7 +22,7 @@ const Footer = () => {
           <FaGithub
             className="text-xl md:text-2xl cursor-pointer"
             onClick={() =>
-              window.open("https://github.com/FJ-Akande", "_blank")
+              window.open("https://github.com/niyidotdev", "_blank")
             }
           />
         </div>
